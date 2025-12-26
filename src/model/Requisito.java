@@ -4,7 +4,7 @@ public class Requisito {
     private int idRequisito;
     //Un requisito pertenece a un trámite
     //Mantiene una referencia al trámite asociado
-    private Tramite tramite;
+    private int tramiteId;
     private boolean certificadoMedico;
     private boolean pago;
     private boolean multas;
@@ -21,12 +21,12 @@ public class Requisito {
         this.idRequisito = idRequisito;
     }
 
-    public Tramite getTramite() {
-        return tramite;
+    public int getTramiteId() {
+        return tramiteId;
     }
 
-    public void setTramite(Tramite tramite) {
-        this.tramite = tramite;
+    public void setTramite(int tramiteId) {
+        this.tramiteId = tramiteId;
     }
 
     public boolean isCertificadoMedico() {
