@@ -29,10 +29,10 @@ public class UsuarioDao {
                 if (BCrypt.checkpw(password, hashBD)) {
 
                     usuario = new Usuario();
-                    usuario.setId(rs.getInt("id"));
+                    usuario.setIdUsuario(rs.getInt("id"));
                     usuario.setNombre(rs.getString("nombre"));
                     usuario.setCedula(rs.getString("cedula"));
-                    usuario.setUsername(rs.getString("username"));
+                    usuario.setUsuario(rs.getString("username"));
                     usuario.setRol(rs.getString("rol"));
                     usuario.setActivo(rs.getBoolean("activo"));
                 }

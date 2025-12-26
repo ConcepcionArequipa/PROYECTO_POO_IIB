@@ -7,9 +7,8 @@ public class Tramite {
     private Solicitante solicitante;
     private String estado; //pendiente, en examenes, aprobado, etc..
     private LocalDate fechaCreacion; //fecha del tramite
+
     public Tramite() {
-        this.fechaCreacion = LocalDate.now(); // Se crea automaticamente
-        this.estado = "pendiente"; // Pendiente inicialmente
     }
 
     //getters y setters

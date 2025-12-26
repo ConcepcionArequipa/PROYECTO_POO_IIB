@@ -4,9 +4,6 @@ import model.Solicitante;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-
-
-
 public class SolicitanteDao {
 
     public boolean insertar(Solicitante s) {
