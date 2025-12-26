@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 
 
 
+
 public class SolicitanteDao {
 
     public boolean insertar(Solicitante s) {
@@ -20,7 +21,7 @@ public class SolicitanteDao {
 
             ps.setString(1, s.getCedula());
             ps.setString(2, s.getNombre());
-            ps.setDate(3, s.getFechaNacimiento());
+            ps.setDate(3, java.sql.Date.valueOf(s.getFechaNacimiento())); // se usa sql.date para cambiar el tipo de dato a SQL
             ps.setString(4, s.getTipoLicencia());
 
             return ps.executeUpdate() > 0;
