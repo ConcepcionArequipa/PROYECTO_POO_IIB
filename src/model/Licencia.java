@@ -8,11 +8,8 @@ public class Licencia {
     private String numeroLicencia;
     private LocalDate fechaEmision;
     private LocalDate fechaVencimiento;
-    public Licencia() {
-        this.fechaEmision=LocalDate.now(); //Se crea automaticamente
-        //plusYears para sumar años a una fecha
-        this.fechaVencimiento=fechaEmision.plusYears(5); //La licencia vence en 5 años
-    }
+
+    public Licencia() {}
 
     public int getIdLicencia() {
         return idLicencia;

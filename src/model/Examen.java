@@ -8,9 +8,7 @@ public class Examen {
     private double notaPractica;
     private LocalDate fechaExamen;
 
-    public Examen() {
-        this.fechaExamen = LocalDate.now(); //Se asigna automaticamente
-    }
+    public Examen() {}
 
     //getters y setters
 

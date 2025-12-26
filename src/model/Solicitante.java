@@ -14,8 +14,7 @@ public class Solicitante {
     //Metodo constructor sin parametros
 
     public Solicitante() {
-        //Se asigna automaticamente dentro del constructor
-        this.fechaSolicitud = LocalDate.now();
+
     }
 
     //getters y setter
