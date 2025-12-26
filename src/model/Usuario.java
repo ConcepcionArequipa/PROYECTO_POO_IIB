@@ -10,6 +10,7 @@ public class Usuario {
     private boolean activo;
 
     //Metodo constructor vacio
+    //Debido a que se asignara los valores desde la interfaz o la BD
     public Usuario() {}
 
     //getters y setters
