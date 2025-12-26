@@ -9,14 +9,17 @@ public class Conexion {
     private static final String User ="ugy8hvqbtqckzd5e";
     private static final String Pass="hXanAUQAhRULp5r9fQJu";
 
-    public Connection getConexion(){
-
-        try{
-           return DriverManager.getConnection(Url,User,Pass);
-
-        }catch(SQLException e){
-            System.out.print("ERROR DE CONEXION EN : "+e.getSQLState());
+    public Connection getConexion() {
+        try {
+            Connection con = DriverManager.getConnection(Url, User, Pass);
+            System.out.println("CONEXIÓN EXITOSA A MYSQL");
+            return con;
+        } catch (SQLException e) {
+            System.out.println("ERROR DE CONEXIÓN");
+            System.out.println("Mensaje: " + e.getMessage());
+            System.out.println("Código SQL: " + e.getSQLState());
             return null;
         }
     }
+
 }

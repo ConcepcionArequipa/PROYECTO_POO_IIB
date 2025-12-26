@@ -30,6 +30,8 @@ public class UsuarioDao {
 
                     usuario = new Usuario();
                     usuario.setId(rs.getInt("id"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setCedula(rs.getString("cedula"));
                     usuario.setUsername(rs.getString("username"));
                     usuario.setRol(rs.getString("rol"));
                     usuario.setActivo(rs.getBoolean("activo"));

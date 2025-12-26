@@ -25,7 +25,7 @@ public class SolicitanteDao {
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.printf("Error : "+e.getMessage());
             return false;
         }
     }
