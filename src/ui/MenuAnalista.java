@@ -1,7 +1,6 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MenuAnalista extends BaseFrame {
 
@@ -17,13 +16,18 @@ public class MenuAnalista extends BaseFrame {
     protected JCheckBox TODOSCheckBox;
     protected JCheckBox PENDIENTECheckBox;
     protected JTextField txtCedula;
-    protected JPanel jpFiltros;
+    protected JButton btnGestionarUsuario;
+    protected JButton btnReporteAdmin;
     protected JPanel mainPanel;
 
     public MenuAnalista() {
         // Llama al constructor de BaseFrame para configurar título, tamaño y centrado
         super("Panel de Gestión - Analista");
         setContentPane(mainPanel);
+
+        // Analista NO puede ver funciones de admin
+        btnGestionarUsuario.setVisible(false);
+        btnReporteAdmin.setVisible(false);
 
         // Inicializar lógica de la tabla (Cargar datos de la BD)
         configurarTabla();
