@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 public class Examen {
     private int idExamen;
-    private Tramite tramite;
+    private int tramiteId;
     private double notaTeorica;
     private double notaPractica;
     private LocalDate fechaExamen;
@@ -21,12 +21,12 @@ public class Examen {
         this.idExamen = idExamen;
     }
 
-    public Tramite getTramite() {
-        return tramite;
+    public int getTramiteId() {
+        return tramiteId;
     }
 
-    public void setTramite(Tramite tramite) {
-        this.tramite = tramite;
+    public void setTramite(int tramiteId) {
+        this.tramiteId = tramiteId;
     }
 
     public double getNotaTeorica() {

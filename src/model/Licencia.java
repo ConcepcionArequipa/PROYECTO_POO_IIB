@@ -4,7 +4,7 @@ import java.time.LocalDate; //Para las fechas
 
 public class Licencia {
     private int idLicencia;
-    private Tramite tramite;
+    private int tramiteId;
     private String numeroLicencia;
     private LocalDate fechaEmision;
     private LocalDate fechaVencimiento;
@@ -19,12 +19,12 @@ public class Licencia {
         this.idLicencia = idLicencia;
     }
 
-    public Tramite getTramite() {
-        return tramite;
+    public int getTramiteId() {
+        return tramiteId;
     }
 
-    public void setTramite(Tramite tramite) {
-        this.tramite = tramite;
+    public void setTramiteId(int tramiteId) {
+        this.tramiteId = tramiteId;
     }
 
     public String getNumeroLicencia() {
