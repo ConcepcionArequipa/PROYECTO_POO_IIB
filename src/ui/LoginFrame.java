@@ -59,7 +59,7 @@ public class LoginFrame extends BaseFrame {
         if(usuario != null){
             mostrarMensaje("Bienvenido "+usuario.getNombre());
             //Logica de roles, para abrir el menu correspondiente
-            if (usuario.getRol().equals("administrador")) {
+            if (usuario.getRol().equalsIgnoreCase("administrador")) {
                 new MenuAdmin(usuario).setVisible(true);
             }
             else {
