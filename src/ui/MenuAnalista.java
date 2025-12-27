@@ -1,5 +1,7 @@
 package ui;
 
+import model.Usuario;
+
 import javax.swing.*;
 
 public class MenuAnalista extends BaseFrame {
@@ -20,10 +22,11 @@ public class MenuAnalista extends BaseFrame {
     protected JButton btnReporteAdmin;
     protected JPanel mainPanel;
 
-    public MenuAnalista() {
+    public MenuAnalista(Usuario usuario) {
         // Llama al constructor de BaseFrame para configurar título, tamaño y centrado
-        super("Panel de Gestión - Analista");
-        setContentPane(mainPanel);
+        super("Panel de Gestión - Analista",usuario);
+        initUI();
+
 
         // Analista NO puede ver funciones de admin
         btnGestionarUsuario.setVisible(false);
@@ -34,6 +37,11 @@ public class MenuAnalista extends BaseFrame {
 
         // Configurar el ButtonGroup para los CheckBoxes
         configurarFiltros();
+    }
+
+    public void initUI() {
+        setContentPane(mainPanel);
+        //Configuracion de tabla de tramites y botones
     }
 
     private void configurarTabla() {

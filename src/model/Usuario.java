@@ -6,7 +6,7 @@ public class Usuario {
     private String cedula;
     private String usuario;
     private String password;
-    private String rol; //Rol: Admin y analista
+    private String rol; //Rol: administrador y analista
     private boolean activo;
 
     //Metodo constructor vacio

@@ -1,5 +1,7 @@
 package ui;
 
+import model.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,10 +10,10 @@ import java.awt.*;
 
 public class MenuAdmin extends MenuAnalista {
 
-    public MenuAdmin() {
+    public MenuAdmin(Usuario usuario) {
         // Llama al constructor del padre (MenuAnalista)
         // Esto carga el .form, la tabla y los filtros automáticamente
-        super();
+        super(usuario);
 
         // Admin sí tiene permisos PUEDE VER LOS BOTONES
         btnGestionarUsuario.setVisible(true);
