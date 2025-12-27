@@ -25,7 +25,7 @@ public class Examen {
         return tramiteId;
     }
 
-    public void setTramite(int tramiteId) {
+    public void setTramiteId(int tramiteId) {
         this.tramiteId = tramiteId;
     }
 

@@ -8,7 +8,7 @@ public class ExamenDao {
     public boolean registrar(Examen e){
 
         String sql = """
-                inset into examen 
+                insert into examen 
                 (tramite_id,nota_teorica , nota_practica, fecha_registro)
                 values(?,?,?,curdate())
                 """;
