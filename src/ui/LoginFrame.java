@@ -2,10 +2,16 @@ package ui;
 
 import javax.swing.*;
 
-public class LoginFrame {
-    private JPasswordField txtPass;
+public class LoginFrame extends BaseFrame {
     private JPanel jpLogin;
+    private JPasswordField txtPassword;
     private JTextField txtUsuario;
-    private JButton btnAcceder;
-    private JButton btnSalir;
+    private JButton salirButton;
+    private JButton ingresarButton;
+
+    public LoginFrame() {
+        super("Iniciar Sesion");
+
+    }
+
 }

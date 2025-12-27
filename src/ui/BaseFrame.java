@@ -7,9 +7,10 @@ public class BaseFrame extends JFrame {
 
     public BaseFrame(String titulo) {
         setTitle(titulo);
-        setSize(1000, 700);
+        setSize(900, 600);
+        setResizable(false); //No cambia el tamaño
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Cierra toda la aplicacion
     }
 
 
@@ -23,7 +24,7 @@ public class BaseFrame extends JFrame {
     // Metodo para regresar al Login (Cerrar sesión)
 
     public void regresarLogin() {
-        // new LoginFrame().setVisible(true);
-        // this.dispose();
+        new LoginFrame().setVisible(true);
+        this.dispose();
     }
 }
