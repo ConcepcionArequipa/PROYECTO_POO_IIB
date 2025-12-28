@@ -39,7 +39,7 @@ public class MenuAnalista extends BaseFrame {
         configurarFiltros();
     }
 
-    public void initUI() {
+    protected void initUI() {
         setContentPane(mainPanel);
         //Configuracion de tabla de tramites y botones
     }
