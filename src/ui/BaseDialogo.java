@@ -15,6 +15,7 @@ public abstract class BaseDialogo extends JDialog {
         setLocationRelativeTo(parent);  // Se centra sobre la ventana padre
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        initUI();
     }
 
     public abstract void initUI();
@@ -22,6 +23,6 @@ public abstract class BaseDialogo extends JDialog {
     // Metodo para mostrar mensajes de alerta de forma rápida
 
     public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
+        JOptionPane.showMessageDialog(this, mensaje,"Informacion",JOptionPane.INFORMATION_MESSAGE);
     }
 }

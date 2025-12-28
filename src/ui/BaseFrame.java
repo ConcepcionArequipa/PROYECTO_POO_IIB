@@ -17,6 +17,7 @@ public abstract class BaseFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        initUI();
     }
 
 
@@ -31,17 +32,18 @@ public abstract class BaseFrame extends JFrame {
     }
 
     public void mostrarError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error de Sistema", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, "Error del sistema", JOptionPane.ERROR_MESSAGE);
     }
 
 
     // Metodo para regresar al Login (Cerrar sesión)
 
     public void cerrarSesion() {
-        int confirmar= JOptionPane.showConfirmDialog(this,"Esta seguro de cerrar sesion?");
+        int confirmar= JOptionPane.showConfirmDialog(this,"Esta seguro de cerrar sesion?", "Cerrar Sesion", JOptionPane.YES_NO_OPTION);
         if(confirmar==JOptionPane.YES_OPTION) {
             this.dispose();
             //Aqui se instanciara el loginFrame
+            new LoginFrame().setVisible(true);
         }
     }
 }

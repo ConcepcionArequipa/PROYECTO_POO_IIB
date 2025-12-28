@@ -17,7 +17,6 @@ public class LoginFrame extends BaseFrame {
 
     public LoginFrame() {
         super("Iniciar Sesion",null); //null porque aun no se inicia sesion
-        initUI();
 
     }
 
