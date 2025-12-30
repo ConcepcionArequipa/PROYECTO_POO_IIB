@@ -2,6 +2,9 @@ package dao;
 
 import model.Tramite;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TramiteDao {
 
@@ -40,5 +43,85 @@ public class TramiteDao {
         }
     }
 
+
+    public List<Object[]> listarTodos() {
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = """
+        SELECT 
+            t.id,
+            s.cedula,
+            s.nombre,
+            s.tipo_licencia,
+            t.fecha_creacion,
+            t.estado
+        FROM tramite t
+        JOIN solicitante s ON s.id = t.solicitante_id
+        ORDER BY t.fecha_creacion DESC
+    """;
+
+        try (Connection con = new Conexion().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Object[] fila = {
+                        rs.getInt("id"),
+                        rs.getString("cedula"),
+                        rs.getString("nombre"),
+                        rs.getString("tipo_licencia"),
+                        rs.getDate("fecha_creacion"),
+                        rs.getString("estado")
+                };
+                lista.add(fila);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error listar todos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    public List<Object[]> listarPorEstado(String estado) {
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = """
+        SELECT 
+            t.id,
+            s.cedula,
+            s.nombre,
+            s.tipo_licencia,
+            t.fecha_creacion,
+            t.estado
+        FROM tramite t
+        JOIN solicitante s ON s.id = t.solicitante_id
+        WHERE t.estado = ?
+    """;
+
+        try (Connection con = new Conexion().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, estado);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                        rs.getInt("id"),
+                        rs.getString("cedula"),
+                        rs.getString("nombre"),
+                        rs.getString("tipo_licencia"),
+                        rs.getDate("fecha_creacion"),
+                        rs.getString("estado")
+                };
+                lista.add(fila);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error listar por estado: " + e.getMessage());
+        }
+
+        return lista;
+    }
 
 }

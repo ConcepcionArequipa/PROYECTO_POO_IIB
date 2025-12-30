@@ -1,17 +1,21 @@
-import dao.Conexion;
+import javax.swing.SwingUtilities;
+import model.Usuario;
+import ui.MenuAnalista;
 
-import java.sql.Connection;
 
 public class Main {
     public static void main(String[] args) {
 
-        Conexion conexion = new Conexion();
-        Connection con = conexion.getConexion();
+        SwingUtilities.invokeLater(() -> {
 
-        if (con != null) {
-            System.out.println("La base de datos responde correctamente");
-        } else {
-            System.out.println("No se pudo establecer la conexión");
-        }
+            Usuario usuarioPrueba = new Usuario();
+            usuarioPrueba.setIdUsuario(1);
+            usuarioPrueba.setNombre("Analista Test");
+            usuarioPrueba.setUsuario("analista");
+            usuarioPrueba.setRol("analista");
+            usuarioPrueba.setActivo(true);
+
+            new MenuAnalista(usuarioPrueba).setVisible(true);
+        });
     }
 }

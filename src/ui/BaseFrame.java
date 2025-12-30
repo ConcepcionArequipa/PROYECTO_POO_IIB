@@ -17,7 +17,6 @@ public abstract class BaseFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        initUI();
     }
 
 

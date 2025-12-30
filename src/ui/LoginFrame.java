@@ -17,7 +17,7 @@ public class LoginFrame extends BaseFrame {
 
     public LoginFrame() {
         super("Iniciar Sesion",null); //null porque aun no se inicia sesion
-
+        initUI();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class LoginFrame extends BaseFrame {
         if(usuario != null){
             mostrarMensaje("Bienvenido "+usuario.getNombre());
             //Logica de roles, para abrir el menu correspondiente
-            if (usuario.getRol().equalsIgnoreCase("administrador")) {
+            if (usuario.getRol().equalsIgnoreCase("admin")) {
                 new MenuAdmin(usuario).setVisible(true);
             }
             else {
