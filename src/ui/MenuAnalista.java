@@ -56,6 +56,7 @@ public class MenuAnalista extends BaseFrame {
 
     }
 
+
     @Override
     public void initUI() {
         setContentPane(mainPanel);

@@ -24,7 +24,7 @@ public abstract class BaseFrame extends JFrame {
 
     //Metodo abstracto para obligar a las hijas a organizar su UI
 
-    public abstract void initUI();
+    protected abstract void initUI();
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
