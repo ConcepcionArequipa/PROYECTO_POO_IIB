@@ -1,7 +1,6 @@
 package ui;
 
 import dao.TramiteDao;
-import jdk.jfr.Enabled;
 import model.Usuario;
 
 import java.awt.event.ActionEvent;
@@ -29,6 +28,8 @@ public class MenuAnalista extends BaseFrame {
     // Solo admin (se ocultan aquí)
     protected JButton btnGestionarUsuario;
     protected JButton btnReporteAdmin;
+    private JCheckBox REPROBADOCheckBox;
+    private JCheckBox EMITIDACheckBox;
 
 
     public MenuAnalista(Usuario usuario) {
