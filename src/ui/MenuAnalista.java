@@ -3,6 +3,9 @@ package ui;
 import dao.TramiteDao;
 import jdk.jfr.Enabled;
 import model.Usuario;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -51,6 +54,12 @@ public class MenuAnalista extends BaseFrame {
 
         accionesBotones();
 
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
 

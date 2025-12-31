@@ -1,7 +1,9 @@
 package ui;
 
+import model.Solicitante;
 import model.Usuario;
-
+import service.SolicitanteService;
+import service.TramiteService;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,9 +18,19 @@ public class RegistrarSolicitante extends BaseFrame{
     private JPanel panelRegistro;
     private JComboBox jcbLicencia;
     private JTextField txtFecha;
+    private JSpinner spinner1;
 
     public RegistrarSolicitante(Usuario usuario) {
         super("Registro de Solicitante",usuario);
+
+    }
+    @Override
+    public void initUI() {
+        setContentPane(panelRegistro);
+        txtFecha.setEditable(false);
+        txtFecha.setText(LocalDate.now().toString());
+
+        //Listeners
         jcbLicencia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -28,27 +40,38 @@ public class RegistrarSolicitante extends BaseFrame{
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    Solicitante solicitante = new Solicitante();
+                    solicitante.setCedula(txtCedula.getText());
+                    solicitante.setNombre(txtNombre.getText());
+                    solicitante.setTipoLicencia(jcbLicencia.getSelectedItem().toString());
+                    SolicitanteService service = new SolicitanteService();
+                    service.registrarSolicitante(solicitante);
+                    mostrarMensaje("Solicitante registrado exitosamente");
+                    txtCedula.setText("");
+                    txtNombre.setText("");
+                    jcbLicencia.setSelectedIndex(0); //Primer elemento
+                }
+                catch (Exception ex){
+                    mostrarError(ex.getMessage());
+                }
             }
         });
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                txtCedula.setText("");
+                txtNombre.setText("");
+                jcbLicencia.setSelectedIndex(0); //Primer elemento
             }
         });
         btnRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose(); //Cierra la ventana
 
             }
         });
-    }
-    @Override
-    public void initUI() {
-        setContentPane(panelRegistro);
-        txtFecha.setEditable(false);
-        txtFecha.setText(LocalDate.now().toString());
     }
 
 }
