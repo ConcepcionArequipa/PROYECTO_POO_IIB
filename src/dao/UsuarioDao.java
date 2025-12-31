@@ -47,6 +47,7 @@ public class UsuarioDao {
 
         return usuario;
     }
+
     public boolean actualizarUsuario(Usuario user) {
 
         String sql = """

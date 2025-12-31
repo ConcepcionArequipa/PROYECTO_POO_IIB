@@ -30,17 +30,19 @@ public class GestionUsuario extends JFrame {
         this.usuario = usuario;
 
         setTitle("Gestión de Usuarios");
-        setSize(700, 500);
+        setSize(800, 500);
         setLocationRelativeTo(null);
         setContentPane(JPgestion);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         configurarTabla();
         configurarGrupos();
+
         btnCrear.addActionListener(e -> crearUsuario());
         btnActualizar.addActionListener(e -> actualizarUsuario());
         btnLimpiar.addActionListener(e -> limpiarFormulario());
         btnRegresar.addActionListener(e -> regresarMenuAdmin());
+
         // FILTROS
         txtCedulaFilltro.addActionListener(e -> filtrarPorCedula());
         //REFRESCAR
