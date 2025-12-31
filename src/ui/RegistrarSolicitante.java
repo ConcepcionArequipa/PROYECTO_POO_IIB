@@ -24,8 +24,10 @@ public class RegistrarSolicitante extends BaseFrame{
             }
         });
     }
-
     @Override
-
+    public void initUI() {
+        setContentPane(panelRegistro);
+    }
 
 }
+

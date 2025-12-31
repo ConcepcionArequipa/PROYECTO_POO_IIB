@@ -1,6 +1,8 @@
 import javax.swing.SwingUtilities;
 import model.Usuario;
 import ui.MenuAnalista;
+import ui.MenuAdmin;
+
 
 
 public class Main {
@@ -10,12 +12,17 @@ public class Main {
 
             Usuario usuarioPrueba = new Usuario();
             usuarioPrueba.setIdUsuario(1);
-            usuarioPrueba.setNombre("Analista Test");
-            usuarioPrueba.setUsuario("analista");
-            usuarioPrueba.setRol("analista");
+            usuarioPrueba.setNombre("Administrador Test");
+            usuarioPrueba.setUsuario("admin");
+            usuarioPrueba.setRol("admin");
             usuarioPrueba.setActivo(true);
 
-            new MenuAnalista(usuarioPrueba).setVisible(true);
+            if (usuarioPrueba.getRol().equalsIgnoreCase("admin")) {
+                new MenuAdmin(usuarioPrueba).setVisible(true);
+            } else if (usuarioPrueba.getRol().equalsIgnoreCase("analista")) {
+                new MenuAnalista(usuarioPrueba).setVisible(true);
+            }
         });
+
     }
 }

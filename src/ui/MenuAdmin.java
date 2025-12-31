@@ -22,5 +22,21 @@ public class MenuAdmin extends MenuAnalista {
         // Cambiamos el título para diferenciar la sesión
         setTitle("SISTEMA DE LICENCIAS - PANEL DE ADMINISTRADOR");
 
+        accionesAdmin();
+    }
+
+    private void accionesAdmin() {
+
+        btnGestionarUsuario.addActionListener(e -> {
+            new GestionUsuario(usuarioLogueado).setVisible(true);
+            this.dispose();
+        });
+
+        btnReporteAdmin.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this,
+                    "Reporte administrativo (pendiente)",
+                    "Admin",
+                    JOptionPane.INFORMATION_MESSAGE);
+        });
     }
 }

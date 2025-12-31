@@ -1,10 +1,7 @@
 package ui;
 
 import dao.TramiteDao;
-import java.awt.BorderLayout;
-
 import jdk.jfr.Enabled;
-import model.Tramite;
 import model.Usuario;
 import java.util.List;
 import javax.swing.*;
@@ -188,5 +185,7 @@ public class MenuAnalista extends BaseFrame {
             cargarTablaPorEstado("TODOS");
         });
     }
+
+
 
 }
