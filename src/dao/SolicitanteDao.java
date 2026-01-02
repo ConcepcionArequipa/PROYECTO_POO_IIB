@@ -3,30 +3,46 @@ package dao;
 import model.Solicitante;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class SolicitanteDao {
 
-    public boolean insertar(Solicitante s) {
+    public int insertarYRetornarId(Solicitante s) {
 
         String sql = "insert into solicitante "
                 + "(cedula, nombre, fecha_nacimiento, tipo_licencia, fecha_solicitud) "
                 + "values (?, ?, ?, ?, curdate())";
 
-        try {
-            Connection con = new Conexion().getConexion();
-            PreparedStatement ps = con.prepareStatement(sql);
+        //try-with-resources
+        //Sirve para cerrar Connection, PreparedStament, ResultSet cuando termina el bloque try
+        try (
+                Connection con = new Conexion().getConexion();
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ){
 
             ps.setString(1, s.getCedula());
             ps.setString(2, s.getNombre());
             ps.setDate(3, java.sql.Date.valueOf(s.getFechaNacimiento())); // se usa sql.date para cambiar el tipo de dato a SQL
             ps.setString(4, s.getTipoLicencia());
 
-            return ps.executeUpdate() > 0;
+            int filas= ps.executeUpdate();
+
+            if(filas == 0) {
+                return -1; //No se inserto nada
+            }
+
+            //Obtiene la id de la bd que se genero automaticamente
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if(rs.next()) {
+                    return rs.getInt(1); //Retorna el id generado
+                }
+            }
 
         } catch (Exception e) {
             System.out.printf("Error : "+e.getMessage());
-            return false;
         }
+        return -1;
     }
 
 }
