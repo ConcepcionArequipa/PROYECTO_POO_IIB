@@ -1,6 +1,7 @@
 package service;
 
 import dao.SolicitanteDao;
+import dao.TramiteDao;
 import model.Solicitante;
 import java.time.LocalDate;
 import java.time.Period;
@@ -10,8 +11,9 @@ public class SolicitanteService {
         //Validaciones de negocio
 
         //Validar si el solicitante es nulo
+
         if(solicitante == null) {
-            throw new Exception("Solicitante invalido");
+            throw new Exception("Solicitante inválido");
         }
 
         //Llamar a los metodos
@@ -26,21 +28,21 @@ public class SolicitanteService {
 
         SolicitanteDao dao = new SolicitanteDao();
 
-        boolean ok = dao.insertar(solicitante);
+        // Insertar solicitante y obtener la ID
 
+        int idSolicitante= dao.insertarYRetornarId(solicitante);
 
-        if(!ok) {
-            throw new Exception("No se pudo registrar el solicitante");
+        if(idSolicitante <= 0) {
+           throw new Exception("No se pudo registrar el solicitante");
         }
 
         //Crear tramite inicial
 
         // NOTA: se requiere que el DAO retorne el ID del solicitante
 
-        //int id = dao.insertar(solicitante);
-        //tramiteDao.crearTramite(id, "pendiente");
+        TramiteDao tramiteDao = new TramiteDao();
 
-
+        tramiteDao.crear(idSolicitante); // estado= pendiente
 
     }
 
@@ -58,7 +60,7 @@ public class SolicitanteService {
     //Metodo para validar la cedula del solicitante
     private void validarCedula(String cedula) throws Exception {
         if(cedula == null || cedula.trim().isEmpty()) {
-            throw new Exception("El cedula es obligatoria");
+            throw new Exception("El cédula es obligatoria");
         }
         if(!cedula.matches("\\d{10}")) {
             throw new Exception("La cédula debe tener 10 digitos numéricos");
