@@ -1,7 +1,6 @@
 package service;
 import dao.TramiteDao;
-import model.Tramite;
-
+import dao.LicenciaDao;
 import java.util.List;
 
 public class TramiteService {
@@ -27,6 +26,20 @@ public class TramiteService {
             throw new Exception("ID de tramite invalido");
         }
 
+        //Consultar el estado actual
+
+        String estadoActual= tramiteDao.obtenerEstado(tramiteId);
+
+        if (estadoActual == null) {
+            throw new Exception("Trámite no encontrado");
+        }
+
+        // Solo se permite si esta en estado = pendiente
+
+        if (!estadoActual.equalsIgnoreCase("pendiente")) {
+            throw new Exception("Los requisitos solo se pueden validar cuando el trámite está en estado pendiente");
+        }
+
         //Validar los requisitos obligatorios
 
         if (!certificadoMedico || !pagoRealizado || !multasPagadas) {
@@ -35,7 +48,7 @@ public class TramiteService {
 
         //Si cumple con los requisitos, cambia a estado en examenes
 
-        boolean ok= tramiteDao.actualizarEstado(tramiteId,"EXAMENES");
+        boolean ok= tramiteDao.actualizarEstado(tramiteId,"en_examenes");
         if(!ok) {
             throw new Exception("No se pudo actualizar el estado del tramite");
         }
@@ -88,6 +101,34 @@ public class TramiteService {
     }
 
     //Generar licencia solo si el estado del tramite es aprobado
+
+    public void generarLicencia(int tramiteId) throws Exception {
+        if (tramiteId <= 0) {
+            throw new Exception("ID de tramite invalido");
+        }
+
+        //Consultar el estado actual del tramite
+
+        String estadoActual= tramiteDao.obtenerEstado(tramiteId);
+
+        if (estadoActual == null) {
+            throw new Exception("Tramite no encontrado");
+        }
+
+        //Solo si esta aprobado
+
+        if (!estadoActual.equalsIgnoreCase("aprobado")) {
+            throw new Exception("Solo se puede generar licencia para trámites aprobados");
+        }
+
+        LicenciaDao licenciaDao = new LicenciaDao();
+
+        boolean ok= licenciaDao.emitir(tramiteId);
+        if(!ok) {
+            throw new Exception("No se pudo generar licencia del tramite");
+        }
+
+    }
 
 
     //Listar tramites por estado
