@@ -1,6 +1,9 @@
 package service;
 import dao.TramiteDao;
 import dao.LicenciaDao;
+import model.Licencia;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class TramiteService {
@@ -74,6 +77,14 @@ public class TramiteService {
 
     public void procesarExamen(int tramiteId, double notaTeorica, double notaPractica) throws Exception {
 
+        String estadoActual= tramiteDao.obtenerEstado(tramiteId);
+        if (estadoActual == null) {
+            throw new Exception("Tramite no encontrado");
+        }
+
+        if (!estadoActual.equalsIgnoreCase("en_examenes")) {
+            throw new Exception("El examen solo puede procesarse cuando el trámite está en estado en_examenes");
+        }
         // Validar ID del trámite
         if (tramiteId <= 0) {
             throw new Exception("ID de trámite inválido");
@@ -100,6 +111,11 @@ public class TramiteService {
         }
     }
 
+    // Metodo para generar el numero de licencia
+
+    private String generarNumLicencia(){
+        return "LIC-"+ System.currentTimeMillis();
+    }
     //Generar licencia solo si el estado del tramite es aprobado
 
     public void generarLicencia(int tramiteId) throws Exception {
@@ -121,9 +137,19 @@ public class TramiteService {
             throw new Exception("Solo se puede generar licencia para trámites aprobados");
         }
 
+        //Crear el objeto Licencia
+
+        Licencia licencia = new Licencia();
+        licencia.setTramiteId(tramiteId);
+        licencia.setNumeroLicencia(generarNumLicencia());
+        licencia.setFechaVencimiento(LocalDate.now().plusYears(5));
+
+        //Emitir licencia
+
         LicenciaDao licenciaDao = new LicenciaDao();
 
-        boolean ok= licenciaDao.emitir(tramiteId);
+
+        boolean ok= licenciaDao.emitir(licencia);
         if(!ok) {
             throw new Exception("No se pudo generar licencia del tramite");
         }
