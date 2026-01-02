@@ -103,7 +103,7 @@ public class TramiteService {
     //Validacion de estados permitidos
 
     private boolean estadoValido(String estado) {
-        return estado != null && (estado.equalsIgnoreCase("pendiente") || estado.equalsIgnoreCase("aprobado") || estado.equalsIgnoreCase("rechazado"));
+        return estado != null && (estado.equalsIgnoreCase("pendiente") || estado.equalsIgnoreCase("en_examenes") || estado.equalsIgnoreCase("aprobado") || estado.equalsIgnoreCase("reprobado"));
     }
 
 

@@ -125,4 +125,23 @@ public class TramiteDao {
         return lista;
     }
 
+    //Metodo para obtener el estado actual del tramite
+    public String obtenerEstado(int tramiteId) {
+        String sql= "SELECT estado FROM tramite WHERE id = ?";
+        try(
+                Connection con = new Conexion().getConexion();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1,tramiteId);
+            ResultSet rs= ps.executeQuery();
+            if (rs.next()){
+                return rs.getString("estado");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al obtener estado: " + e.getMessage());
+        }
+        return null;
+    }
+
 }
