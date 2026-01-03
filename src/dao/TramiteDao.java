@@ -32,15 +32,31 @@ public class TramiteDao {
                 Connection con = new Conexion().getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
-
             ps.setString(1,estado);
             ps.setInt(2,tramiteId);
-
             return ps.executeUpdate() > 0;
 
         }catch (Exception e) {
-            System.out.printf("Error : "+ e.getMessage());
-            return false;
+            throw new RuntimeException("Error al actualizar el estado del tramite: ", e);
+
+        }
+    }
+
+
+
+    public boolean actualizarEstado(int tramiteId , String estado, Connection con){
+        String sql = "update tramite set estado = ? where id =?";
+
+        try(
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setString(1,estado);
+            ps.setInt(2,tramiteId);
+            return ps.executeUpdate() > 0;
+
+        }catch (Exception e) {
+            throw new RuntimeException("Error al actualizar el estado del tramite: ", e);
+
         }
     }
 
@@ -133,13 +149,39 @@ public class TramiteDao {
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
             ps.setInt(1,tramiteId);
-            ResultSet rs= ps.executeQuery();
-            if (rs.next()){
-                return rs.getString("estado");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()){
+                    return rs.getString("estado");
+                }
             }
 
+
+
         } catch (Exception e) {
-            System.out.println("Error al obtener estado: " + e.getMessage());
+            throw new RuntimeException("Error al obtener el estado del tramite: ",e);
+        }
+        return null;
+    }
+
+    //Metodo para obtener el estado actual del tramite
+    public String obtenerEstado(int tramiteId, Connection con) {
+        String sql= "SELECT estado FROM tramite WHERE id = ?";
+        try(
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1,tramiteId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()){
+                    return rs.getString("estado");
+                }
+            }
+
+
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener el estado del tramite: ",e);
         }
         return null;
     }

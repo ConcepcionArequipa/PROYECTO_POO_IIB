@@ -4,7 +4,11 @@ import java.sql.*;
 
 public class LicenciaDao {
 
-    public boolean emitir(Licencia l){
+    //Reciben connection como parametro
+    //Para que Service controle la transaccion
+    //Garantizando que las operaciones criticas se ejectuten de forma atomica
+
+    public boolean emitir(Licencia l, Connection con) {
 
         String sql = """
                 insert into licencia
@@ -12,7 +16,6 @@ public class LicenciaDao {
                 values(?,?,curdate(),?)
                 """;
         try(
-                Connection con = new Conexion().getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
 
@@ -30,26 +33,25 @@ public class LicenciaDao {
     //Metodo para verificar si ya existe una Licencia por tramite
     //Recibe la id del tramite y retorna true si ya existe
 
-    public boolean existeLicencia(int tramiteId){
+    public boolean existeLicencia(int tramiteId, Connection con) {
 
         //Cuenta cuantas licencias estan asociadas al tramite
         String sql= "select count(*) from licencia where tramite_id=?";
         try(
-                Connection con = new Conexion().getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)
         ){
             ps.setInt(1,tramiteId);
 
             //Ejecutar consulta
+            //Devuelve el resultado de la consulta, como una fila por count
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    return rs.getInt(1)> 0; //Si es mayor que 0 es true, existe licencia
+                }
 
-            ResultSet rs= ps.executeQuery(); //Devuelve el resultado de la consulta, como una fila por count
-
-            //Lee el rsultado
-            if (rs.next()){
-                //Si es mayor que 0 es true, existe licencia
-                return rs.getInt(1)> 0;
+                return false;
             }
-            return false; //No exite licencia
+
         }catch (Exception e){
             //Excepcion no verificada para errores tecnicos
             throw new RuntimeException("Error al verificar licencia",e);

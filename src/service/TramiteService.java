@@ -1,8 +1,10 @@
 package service;
+import dao.Conexion;
 import dao.TramiteDao;
 import dao.LicenciaDao;
 import model.Licencia;
 
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -57,27 +59,17 @@ public class TramiteService {
         }
     }
 
-    //Cambiar el estado del tramite
-
-    public void cambiarEstado(int tramiteId, String nuevoEstado) throws Exception {
-        if (tramiteId <= 0) {
-            throw new Exception("ID de tramite invalido");
-        }
-        if (!estadoValido(nuevoEstado)) {
-            throw new Exception("Estado no permitido");
-        }
-
-        boolean ok= tramiteDao.actualizarEstado(tramiteId, nuevoEstado);
-        if(!ok) {
-            throw new Exception("No se pudo actualizar el estado del tramite");
-        }
-    }
-
     //Para procesar la nota del examen
 
     public void procesarExamen(int tramiteId, double notaTeorica, double notaPractica) throws Exception {
 
+        // Validar ID del trámite
+        if (tramiteId <= 0) {
+            throw new Exception("ID de trámite inválido");
+        }
+
         String estadoActual= tramiteDao.obtenerEstado(tramiteId);
+
         if (estadoActual == null) {
             throw new Exception("Tramite no encontrado");
         }
@@ -85,10 +77,7 @@ public class TramiteService {
         if (!estadoActual.equalsIgnoreCase("en_examenes")) {
             throw new Exception("El examen solo puede procesarse cuando el trámite está en estado en_examenes");
         }
-        // Validar ID del trámite
-        if (tramiteId <= 0) {
-            throw new Exception("ID de trámite inválido");
-        }
+
 
         // Validar rango de notas
         if (notaTeorica < 0 || notaTeorica > 20 || notaPractica < 0 || notaPractica > 20) {
@@ -119,41 +108,69 @@ public class TramiteService {
     //Generar licencia solo si el estado del tramite es aprobado
 
     public void generarLicencia(int tramiteId) throws Exception {
+
         if (tramiteId <= 0) {
             throw new Exception("ID de tramite invalido");
         }
+        Connection con= null;
+        try{
+            con= new Conexion().getConexion();
+            con.setAutoCommit(false); //Inicia transaccion
 
-        //Consultar el estado actual del tramite
+            //Validaciones
 
-        String estadoActual= tramiteDao.obtenerEstado(tramiteId);
+            //Consultar el estado actual del tramite
+            String estadoActual= tramiteDao.obtenerEstado(tramiteId,con);
 
-        if (estadoActual == null) {
-            throw new Exception("Tramite no encontrado");
+            if (estadoActual == null) {
+                throw new Exception("Tramite no encontrado");
+            }
+
+            if (!"aprobado".equalsIgnoreCase(estadoActual)) {
+                throw new Exception("Tramite no aprobado");
+            }
+
+            //Emitir licencia
+            LicenciaDao licenciaDao = new LicenciaDao();
+
+            if (licenciaDao.existeLicencia(tramiteId,con)) {
+                throw new Exception("Licencia duplicada");
+            }
+
+            //Crear el objeto Licencia
+
+            Licencia licencia = new Licencia();
+            licencia.setTramiteId(tramiteId);
+            licencia.setNumeroLicencia(generarNumLicencia());
+            licencia.setFechaVencimiento(LocalDate.now().plusYears(5));
+
+            boolean licenciaExitosa=licenciaDao.emitir(licencia,con);
+            if(!licenciaExitosa) {
+                throw new Exception("Error al emitir la licencia");
+            }
+
+            //Actualizar el estado del tramite
+
+            boolean okEstado=tramiteDao.actualizarEstado(tramiteId,"licencia_emitida",con);
+
+            if(!okEstado) {
+                throw new Exception("La licencia se emitió, pero no se pudo actualizar el estado del tramite");
+            }
+
+            con.commit(); //Se realizo con exito
         }
 
-        //Solo si esta aprobado
+        catch (Exception e){
+            if(con != null) {
+                con.rollback(); //Deshace
+            }
+            throw e;
 
-        if (!estadoActual.equalsIgnoreCase("aprobado")) {
-            throw new Exception("Solo se puede generar licencia para trámites aprobados");
+        } finally {
+            if(con != null) {
+                con.close();
+            }
         }
-
-        //Crear el objeto Licencia
-
-        Licencia licencia = new Licencia();
-        licencia.setTramiteId(tramiteId);
-        licencia.setNumeroLicencia(generarNumLicencia());
-        licencia.setFechaVencimiento(LocalDate.now().plusYears(5));
-
-        //Emitir licencia
-
-        LicenciaDao licenciaDao = new LicenciaDao();
-
-
-        boolean ok= licenciaDao.emitir(licencia);
-        if(!ok) {
-            throw new Exception("No se pudo generar licencia del tramite");
-        }
-
     }
 
 
@@ -170,7 +187,7 @@ public class TramiteService {
     //Validacion de estados permitidos
 
     private boolean estadoValido(String estado) {
-        return estado != null && (estado.equalsIgnoreCase("pendiente") || estado.equalsIgnoreCase("en_examenes") || estado.equalsIgnoreCase("aprobado") || estado.equalsIgnoreCase("reprobado"));
+        return estado != null && (estado.equalsIgnoreCase("pendiente") || estado.equalsIgnoreCase("en_examenes") || estado.equalsIgnoreCase("aprobado") || estado.equalsIgnoreCase("reprobado")|| estado.equalsIgnoreCase("licencia_emitida"));
     }
 
 
