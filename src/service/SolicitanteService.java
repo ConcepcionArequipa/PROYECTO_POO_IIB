@@ -28,6 +28,10 @@ public class SolicitanteService {
 
         SolicitanteDao dao = new SolicitanteDao();
 
+        if (dao.existeCedula(solicitante.getCedula())){
+            throw new Exception("La cedula ya esta registrada");
+        }
+
         // Insertar solicitante y obtener la ID
 
         int idSolicitante= dao.insertarYRetornarId(solicitante);
@@ -42,8 +46,10 @@ public class SolicitanteService {
 
         TramiteDao tramiteDao = new TramiteDao();
 
-        tramiteDao.crear(idSolicitante); // estado= pendiente
-
+       boolean ok= tramiteDao.crear(idSolicitante); // estado= pendiente
+        if(!ok) {
+            throw new Exception("No se pudo crear el tramite inicial");
+        }
     }
 
     //Metodo para validar la edad del solicitante

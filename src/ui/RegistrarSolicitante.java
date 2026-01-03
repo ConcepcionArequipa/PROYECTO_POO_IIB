@@ -18,7 +18,6 @@ public class RegistrarSolicitante extends BaseFrame{
     private JPanel panelRegistro;
     private JComboBox jcbLicencia;
     private JTextField txtFecha;
-    private JSpinner spinner1;
 
     public RegistrarSolicitante(Usuario usuario) {
         super("Registro de Solicitante",usuario);
