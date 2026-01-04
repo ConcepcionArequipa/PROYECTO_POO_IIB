@@ -59,7 +59,7 @@ public class LicenciaDao {
     }
 
     public boolean cambiarEstado(int tramiteId, Connection con) {
-        String sql = "UPDATE tramite SET estado = 'EMITIDO' WHERE id_tramite = ?";
+        String sql = "UPDATE tramite SET estado = 'EMITIDA' WHERE id = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, tramiteId);

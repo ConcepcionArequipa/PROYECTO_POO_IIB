@@ -222,10 +222,20 @@ public class MenuAnalista extends BaseFrame {
         });
 
         btnGenerar.addActionListener(e -> {
-            int idTramite = obtenerIdTramiteSeleccionado();
-            if (idTramite == -1) return;
+            int fila = table1.getSelectedRow();
+            if (fila == -1) return;
 
-            // new VentanaLicencia(idTramite).setVisible(true);
+            // 1. Extraemos los datos de la fila seleccionada en la tabla
+            int columnas = table1.getColumnCount();
+            Object[] datosFila = new Object[columnas];
+            for (int i = 0; i < columnas; i++) {
+                datosFila[i] = table1.getValueAt(fila, i);
+            }
+
+            // 2. Abrimos la ventana de GenerarLicencia pasando los datos
+            // Usamos una ventana modal para que el analista termine este proceso
+            new GenerarLicencia(datosFila).setVisible(true);
+
             cargarTablaPorEstado("TODOS");
         });
 
