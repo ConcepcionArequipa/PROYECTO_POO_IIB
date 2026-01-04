@@ -9,29 +9,19 @@ import java.util.List;
 
 public class ReporteDao {
 
-    public List<Object[]> filtrarReporteCompleto(String estado, String tipo, String cedula, java.sql.Date fechaInicio, java.sql.Date fechaFin) {
+
+    public List<Object[]> llenarTabla() {
         List<Object[]> lista = new ArrayList<>();
 
         String sql = """
         SELECT t.id, s.cedula, s.nombre, s.tipo_licencia, t.fecha_creacion, t.estado
         FROM tramite t
         JOIN solicitante s ON s.id = t.solicitante_id
-        WHERE (t.estado = ? OR ? = 'TODOS')
-          AND (s.tipo_licencia = ? OR ? = 'TODOS')
-          AND (s.cedula LIKE ?)
-          AND (t.fecha_creacion BETWEEN ? AND ?)
     """;
 
         try (Connection con = new Conexion().getConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, estado);
-            ps.setString(2, estado);
-            ps.setString(3, tipo);
-            ps.setString(4, tipo);
-            ps.setString(5, "%" + cedula + "%");
-            ps.setDate(6, fechaInicio);
-            ps.setDate(7, fechaFin);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -43,6 +33,71 @@ public class ReporteDao {
         } catch (Exception e) {
             System.out.println("Error en filtro avanzado: " + e.getMessage());
         }
+        return lista;
+    }
+
+    public List<Object[]> filtrarFlexible(
+            String estado,
+            String tipo,
+            String cedula,
+            Date desde,
+            Date hasta
+    ) {
+
+        List<Object[]> lista = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+        SELECT t.id, s.cedula, s.nombre, s.tipo_licencia, t.fecha_creacion, t.estado
+        FROM tramite t
+        JOIN solicitante s ON s.id = t.solicitante_id
+        WHERE 1=1
+    """);
+
+        List<Object> params = new ArrayList<>();
+
+        if (!estado.equals("TODOS")) {
+            sql.append(" AND t.estado = ?");
+            params.add(estado);
+        }
+
+        if (!tipo.equals("TODOS")) {
+            sql.append(" AND s.tipo_licencia = ?");
+            params.add(tipo);
+        }
+
+        if (!cedula.isEmpty()) {
+            sql.append(" AND s.cedula LIKE ?");
+            params.add("%" + cedula + "%");
+        }
+
+        if (desde != null && hasta != null) {
+            sql.append(" AND t.fecha_creacion BETWEEN ? AND ?");
+            params.add(desde);
+            params.add(hasta);
+        }
+
+        try (Connection con = new Conexion().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("cedula"),
+                        rs.getString("nombre"),
+                        rs.getString("tipo_licencia"),
+                        rs.getDate("fecha_creacion"),
+                        rs.getString("estado")
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return lista;
     }
 

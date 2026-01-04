@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import dao.ReporteDao;
@@ -18,6 +20,12 @@ public class ReporteAdmin extends JFrame {
     private JFormattedTextField desdeFecha;
     private JFormattedTextField hastaFecha;
     private JPanel ReportePanel;
+    // labels
+    private JLabel lblPendiente;
+    private JLabel lblExamen;
+    private JLabel lblEmitidas;
+    private JLabel lblAprobado;
+    private JLabel lblReprobado;
 
     private Usuario usuario;
     private DefaultTableModel modelo; // Variable de clase para que todos los métodos la vean
@@ -31,11 +39,48 @@ public class ReporteAdmin extends JFrame {
         setContentPane(ReportePanel);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        cargarFechasIniciales();
         configurarTabla();
 
+        // una mascara para hacer que solo en fechas se pueda incluir numeros
+        // solo puede ser años-mes-dia para coincidir con la base de datos
+        try {
+            MaskFormatter mask = new MaskFormatter("####-##-##");
+            mask.setPlaceholderCharacter('_');
+
+            DefaultFormatterFactory factory = new DefaultFormatterFactory(mask);
+            desdeFecha.setFormatterFactory(factory);
+            hastaFecha.setFormatterFactory(factory);
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        cargarTablaInicial();
+
+
+        // texto en labels
+        lblPendiente.setText("Pendientes: 0");
+        lblExamen.setText("En examen: 0");
+        lblEmitidas.setText("Emitidas: 0");
+        lblAprobado.setText("Aprobadas: 0");
+        lblReprobado.setText("Reprobadas: 0");
+
+
+        // FUNCION BOTONES
         FILTRARButton.addActionListener(e -> EnviarReporte());
         regresarButton.addActionListener(e -> regresarMenuAdmin());
     }
+
+    private void cargarTablaInicial() {
+        modelo.setRowCount(0);
+
+        List<Object[]> datos = reporteDao.llenarTabla();
+        for (Object[] fila : datos) {
+            modelo.addRow(fila);
+        }
+    }
+
 
     private void configurarTabla() {
 
@@ -52,15 +97,26 @@ public class ReporteAdmin extends JFrame {
         table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
+    private void cargarFechasIniciales() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
+
+        desdeFecha.setText(sdf.format(cal.getTime()));
+        hastaFecha.setText(sdf.format(new java.util.Date()));
+    }
+
+
     private void EnviarReporte() {
         try {
             // Validación: Si el campo tiene el texto por defecto, no procesar
-            if (desdeFecha.getText().equals("DD/MM/AAAA") || hastaFecha.getText().equals("DD/MM/AAAA")) {
-                JOptionPane.showMessageDialog(this, "Por favor ingrese fechas válidas.");
+            if (desdeFecha.getText().contains("_") || hastaFecha.getText().contains("_")) {
+                JOptionPane.showMessageDialog(this, "Complete correctamente las fechas.");
                 return;
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date d1 = sdf.parse(desdeFecha.getText());
             java.util.Date d2 = sdf.parse(hastaFecha.getText());
 
@@ -71,7 +127,7 @@ public class ReporteAdmin extends JFrame {
             modelo.setRowCount(0);
 
             // Obtener datos del DAO
-            List<Object[]> datos = reporteDao.filtrarReporteCompleto(
+            List<Object[]> datos = reporteDao.filtrarFlexible(
                     Estado.getSelectedItem().toString(),
                     TIPO.getSelectedItem().toString(),
                     textField1.getText(),
@@ -91,6 +147,7 @@ public class ReporteAdmin extends JFrame {
             JOptionPane.showMessageDialog(this, "Error en formato de fecha o conexión: " + e.getMessage());
         }
     }
+
 
     private void regresarMenuAdmin() {
         this.dispose();

@@ -76,7 +76,9 @@
       </component>
       <hspacer id="e4385">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="8" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="8" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="14" height="18"/>
+          </grid>
         </constraints>
       </hspacer>
       <vspacer id="35603">
@@ -147,7 +149,7 @@
           <text value="LICENCIAS"/>
         </properties>
       </component>
-      <component id="f2f21" class="javax.swing.JLabel">
+      <component id="f2f21" class="javax.swing.JLabel" binding="lblPendiente">
         <constraints>
           <grid row="2" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -155,7 +157,7 @@
           <text value="PENDIENTES: "/>
         </properties>
       </component>
-      <component id="ba444" class="javax.swing.JLabel">
+      <component id="ba444" class="javax.swing.JLabel" binding="lblExamen">
         <constraints>
           <grid row="3" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -163,7 +165,7 @@
           <text value="EXAMENES: "/>
         </properties>
       </component>
-      <component id="43d4a" class="javax.swing.JLabel">
+      <component id="43d4a" class="javax.swing.JLabel" binding="lblEmitidas">
         <constraints>
           <grid row="6" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -171,7 +173,7 @@
           <text value="EMITIDAS:"/>
         </properties>
       </component>
-      <component id="ce6c0" class="javax.swing.JLabel">
+      <component id="ce6c0" class="javax.swing.JLabel" binding="lblAprobado">
         <constraints>
           <grid row="4" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -179,7 +181,7 @@
           <text value="APROBADO"/>
         </properties>
       </component>
-      <component id="b8996" class="javax.swing.JLabel">
+      <component id="b8996" class="javax.swing.JLabel" binding="lblReprobado">
         <constraints>
           <grid row="5" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -195,14 +197,6 @@
           <text value="Regresar"/>
         </properties>
       </component>
-      <component id="be6fd" class="javax.swing.JButton" binding="EXPORTARButton" default-binding="true">
-        <constraints>
-          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="EXPORTAR"/>
-        </properties>
-      </component>
       <component id="f89b6" class="javax.swing.JFormattedTextField" binding="desdeFecha">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -210,7 +204,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="DD/MM/AAAA"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="7f606" class="javax.swing.JFormattedTextField" binding="hastaFecha">
@@ -220,7 +214,23 @@
           </grid>
         </constraints>
         <properties>
-          <text value="DD/MM/AAAA"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="67927" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="YYYY-MM-DD"/>
+        </properties>
+      </component>
+      <component id="be6fd" class="javax.swing.JButton" binding="EXPORTARButton" default-binding="true">
+        <constraints>
+          <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="EXPORTAR"/>
         </properties>
       </component>
     </children>
