@@ -57,6 +57,8 @@ public class ReporteAdmin extends JFrame {
         // 5. Asignar funciones a los botones
         FILTRARButton.addActionListener(e -> EnviarReporte());
         regresarButton.addActionListener(e -> regresarMenuAdmin());
+        EXPORTARButton.addActionListener(e -> generarReporteCSV());
+
     }
 
     private void configurarMascarasFecha(){
@@ -148,4 +150,62 @@ public class ReporteAdmin extends JFrame {
                 lblEmitidas
         );
     }
+
+
+    private void generarReporteCSV() {
+
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No hay datos para exportar.");
+            return;
+        }
+
+        try {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setSelectedFile(new java.io.File("reporte_filtrado.csv"));
+
+            if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) return;
+
+            java.io.FileWriter writer = new java.io.FileWriter(chooser.getSelectedFile());
+
+            // =========================
+            // 1. RESUMEN DE ESTADOS
+            // =========================
+            writer.append("RESUMEN DE ESTADOS\n");
+            writer.append("Estado,Cantidad\n");
+
+            writer.append("Pendiente,").append(lblPendiente.getText()).append("\n");
+            writer.append("Examen,").append(lblExamen.getText()).append("\n");
+            writer.append("Aprobado,").append(lblAprobado.getText()).append("\n");
+            writer.append("Reprobado,").append(lblReprobado.getText()).append("\n");
+            writer.append("Emitido,").append(lblEmitidas.getText()).append("\n");
+
+            writer.append("\n");
+
+            // =========================
+            // 2. DETALLE DE LA TABLA
+            // =========================
+            writer.append("DETALLE DEL REPORTE\n");
+
+            // Encabezados
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                writer.append(modelo.getColumnName(i)).append(",");
+            }
+            writer.append("\n");
+
+            // Filas
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    writer.append(modelo.getValueAt(i, j).toString()).append(",");
+                }
+                writer.append("\n");
+            }
+
+            writer.close();
+            JOptionPane.showMessageDialog(this, "Reporte CSV generado correctamente.");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al generar CSV: " + e.getMessage());
+        }
+    }
+
 }
