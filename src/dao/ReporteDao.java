@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.*;
+import javax.swing.JLabel;
 
 import model.Reporte;
 import java.util.ArrayList;
@@ -99,6 +100,38 @@ public class ReporteDao {
         }
 
         return lista;
+    }
+
+    public void cargarConteosAutomaticos(JLabel pend, JLabel exam, JLabel aprob, JLabel reprob, JLabel emit) {
+        // Reiniciamos a 0 por si la consulta no devuelve algún estado
+        pend.setText("Pendientes: 0");
+        exam.setText("En examen: 0");
+        aprob.setText("Aprobadas: 0");
+        reprob.setText("Reprobadas: 0");
+        emit.setText("Emitidas: 0");
+
+        String sql = "SELECT estado, COUNT(*) as total FROM tramite GROUP BY estado";
+
+        try (Connection con = new Conexion().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                String estado = rs.getString("estado");
+                int total = rs.getInt("total");
+
+                // Asignación directa según el nombre del estado
+                switch (estado.toUpperCase()) {
+                    case "PENDIENTE" -> pend.setText("Pendientes: " + total);
+                    case "EXAMENES"  -> exam.setText("En examen: " + total);
+                    case "APROBADO"  -> aprob.setText("Aprobadas: " + total);
+                    case "REPROBADO" -> reprob.setText("Reprobadas: " + total);
+                    case "EMITIDA"   -> emit.setText("Emitidas: " + total);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al contar estados: " + e.getMessage());
+        }
     }
 
 }

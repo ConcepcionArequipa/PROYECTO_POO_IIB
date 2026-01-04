@@ -6,6 +6,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 import dao.ReporteDao;
 import model.Usuario;
 
@@ -20,7 +21,8 @@ public class ReporteAdmin extends JFrame {
     private JFormattedTextField desdeFecha;
     private JFormattedTextField hastaFecha;
     private JPanel ReportePanel;
-    // labels
+
+    // Labels del diseño
     private JLabel lblPendiente;
     private JLabel lblExamen;
     private JLabel lblEmitidas;
@@ -28,62 +30,56 @@ public class ReporteAdmin extends JFrame {
     private JLabel lblReprobado;
 
     private Usuario usuario;
-    private DefaultTableModel modelo; // Variable de clase para que todos los métodos la vean
-    private ReporteDao reporteDao = new ReporteDao(); // Instancia del DAO
+    private DefaultTableModel modelo;
+    private ReporteDao reporteDao = new ReporteDao();
 
     public ReporteAdmin(Usuario usuario) {
         this.usuario = usuario;
         setTitle("REPORTE - ADMIN");
-        setSize(900, 600); // Aumenté el tamaño para que la tabla se vea bien
+        setSize(900, 600);
         setLocationRelativeTo(null);
         setContentPane(ReportePanel);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-
+        // 1. Configurar la estructura de la tabla
         configurarTabla();
 
-        // una mascara para hacer que solo en fechas se pueda incluir numeros
-        // solo puede ser años-mes-dia para coincidir con la base de datos
-        try {
-            MaskFormatter mask = new MaskFormatter("####-##-##");
-            mask.setPlaceholderCharacter('_');
+        // 2. Configurar máscaras de fecha
+        configurarMascarasFecha();
 
-            DefaultFormatterFactory factory = new DefaultFormatterFactory(mask);
-            desdeFecha.setFormatterFactory(factory);
-            hastaFecha.setFormatterFactory(factory);
-
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
+        // 3. Cargar los datos en la tabla al iniciar
         cargarTablaInicial();
 
+        // 4. CARGA AUTOMÁTICA DE CONTEOS
+        // Es importante llamar a este metodo DESPUES de que los labels hayan sido inicializados por el Form
+        actualizarEstadisticas();
 
-        // texto en labels
-        lblPendiente.setText("Pendientes: 0");
-        lblExamen.setText("En examen: 0");
-        lblEmitidas.setText("Emitidas: 0");
-        lblAprobado.setText("Aprobadas: 0");
-        lblReprobado.setText("Reprobadas: 0");
-
-
-        // FUNCION BOTONES
+        // 5. Asignar funciones a los botones
         FILTRARButton.addActionListener(e -> EnviarReporte());
         regresarButton.addActionListener(e -> regresarMenuAdmin());
     }
 
+    private void configurarMascarasFecha(){
+        try {
+            MaskFormatter mask = new MaskFormatter("####-##-##");
+            mask.setPlaceholderCharacter('_');
+            DefaultFormatterFactory factory = new DefaultFormatterFactory(mask);
+            desdeFecha.setFormatterFactory(factory);
+            hastaFecha.setFormatterFactory(factory);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void cargarTablaInicial() {
         modelo.setRowCount(0);
-
         List<Object[]> datos = reporteDao.llenarTabla();
         for (Object[] fila : datos) {
             modelo.addRow(fila);
         }
     }
 
-
     private void configurarTabla() {
-
         modelo = new DefaultTableModel(
                 new Object[]{"ID", "Cédula", "Nombre", "Tipo Licencia", "Fecha Creación", "Estado"}, 0
         ) {
@@ -92,17 +88,15 @@ public class ReporteAdmin extends JFrame {
                 return false;
             }
         };
-
         table1.setModel(modelo);
         table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-
     private void EnviarReporte() {
         try {
-            // Validación: Si el campo tiene el texto por defecto, no procesar
+            // Si no se ingresan fechas, podrías optar por cargar todo o validar
             if (desdeFecha.getText().contains("_") || hastaFecha.getText().contains("_")) {
-                JOptionPane.showMessageDialog(this, "Complete correctamente las fechas.");
+                JOptionPane.showMessageDialog(this, "Complete correctamente las fechas (AAAA-MM-DD).");
                 return;
             }
 
@@ -113,10 +107,8 @@ public class ReporteAdmin extends JFrame {
             java.sql.Date sqlInicio = new java.sql.Date(d1.getTime());
             java.sql.Date sqlFin = new java.sql.Date(d2.getTime());
 
-            // Limpiar tabla antes de cargar nuevos datos
             modelo.setRowCount(0);
 
-            // Obtener datos del DAO
             List<Object[]> datos = reporteDao.filtrarFlexible(
                     Estado.getSelectedItem().toString(),
                     TIPO.getSelectedItem().toString(),
@@ -129,19 +121,31 @@ public class ReporteAdmin extends JFrame {
                 modelo.addRow(fila);
             }
 
+            // Opcional: Actualizar estadísticas también al filtrar
+            actualizarEstadisticas();
+
             if (datos.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No se encontraron registros.");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en formato de fecha o conexión: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }
 
-
     private void regresarMenuAdmin() {
         this.dispose();
-        // Pasamos el objeto usuario de vuelta para mantener la sesión
         new MenuAdmin(usuario).setVisible(true);
+    }
+
+    // Metodo para refrescar los Labels usando el DAO
+    private void actualizarEstadisticas() {
+        reporteDao.cargarConteosAutomaticos(
+                lblPendiente,
+                lblExamen,
+                lblAprobado,
+                lblReprobado,
+                lblEmitidas
+        );
     }
 }
