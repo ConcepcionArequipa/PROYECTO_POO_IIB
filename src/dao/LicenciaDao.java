@@ -57,4 +57,19 @@ public class LicenciaDao {
             throw new RuntimeException("Error al verificar licencia",e);
         }
     }
+
+    public boolean cambiarEstado(int tramiteId, Connection con) {
+        String sql = "UPDATE tramite SET estado = 'EMITIDO' WHERE id_tramite = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, tramiteId);
+            return ps.executeUpdate() > 0; // retorna true si se actualizó al menos 1 fila
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e);
+            return false;
+        }
+    }
+
+
+
 }

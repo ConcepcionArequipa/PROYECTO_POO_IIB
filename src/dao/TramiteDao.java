@@ -13,7 +13,7 @@ public class TramiteDao {
     public boolean crear(int solicitanteId){
 
         String sql = "insert into tramite (solicitante_id, estado, fecha_creacion) " +
-                      "values (?, 'pendiente', curdate())";
+                      "values (?, 'PENDIENTE', curdate())";
         try(
                 Connection con = new Conexion().getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)
