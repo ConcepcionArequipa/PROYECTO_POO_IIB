@@ -53,7 +53,7 @@ public class TramiteService {
 
         //Si cumple con los requisitos, cambia a estado en examenes
 
-        boolean ok= tramiteDao.actualizarEstado(tramiteId,"en_examenes");
+        boolean ok= tramiteDao.actualizarEstado(tramiteId,"EN_EXAMENES");
         if(!ok) {
             throw new Exception("No se pudo actualizar el estado del tramite");
         }
@@ -87,9 +87,9 @@ public class TramiteService {
         // Regla de negocio: nota minima de 14 para aprobar
         String nuevoEstado;
         if (notaTeorica >= 14 && notaPractica >= 14) {
-            nuevoEstado = "aprobado";
+            nuevoEstado = "APROBADO";
         } else {
-            nuevoEstado = "reprobado";
+            nuevoEstado = "REPROBADO";
         }
 
         // Actualizar estado del trámite
@@ -151,7 +151,7 @@ public class TramiteService {
 
             //Actualizar el estado del tramite
 
-            boolean okEstado=tramiteDao.actualizarEstado(tramiteId,"licencia_emitida",con);
+            boolean okEstado=tramiteDao.actualizarEstado(tramiteId,"LICENCIA_EMITIDA",con);
 
             if(!okEstado) {
                 throw new Exception("La licencia se emitió, pero no se pudo actualizar el estado del tramite");
