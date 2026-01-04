@@ -52,6 +52,20 @@ public class RegistrarSolicitante extends BaseFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    String cedula = txtCedula.getText().trim();
+                    String nombre = txtNombre.getText().trim();
+
+                    if (cedula.isEmpty()) {
+                        mostrarError("Campo Cedula vacio o Menor a 10 Digitos.");
+                        return;
+                    }
+
+                    if (nombre.isEmpty()) {
+                        mostrarError("Campo Nombre vacio.");
+                        return;
+                    }
+
+
                     if (Fe_Nacimiento.getText().contains("_")) {
                         mostrarError("Complete correctamente la fecha de nacimiento.");
                         return;
@@ -72,6 +86,7 @@ public class RegistrarSolicitante extends BaseFrame{
                     mostrarMensaje("Solicitante registrado exitosamente");
                     txtCedula.setText("");
                     txtNombre.setText("");
+                    Fe_Nacimiento.setValue(null);
                     jcbLicencia.setSelectedIndex(0); //Primer elemento
                 }
                 catch (Exception ex){
