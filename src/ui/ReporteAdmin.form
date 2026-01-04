@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ui.ReporteAdmin">
-  <grid id="27dc6" layout-manager="GridLayoutManager" row-count="13" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="ReportePanel" layout-manager="GridLayoutManager" row-count="13" column-count="10" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="506" height="400"/>
@@ -18,11 +18,19 @@
           <text value="ESTADO "/>
         </properties>
       </component>
-      <component id="76043" class="javax.swing.JComboBox" binding="comboBox3" default-binding="true">
+      <component id="76043" class="javax.swing.JComboBox" binding="Estado">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <model>
+            <item value="PENDIENTE"/>
+            <item value="EXAMENES"/>
+            <item value="APROBADO"/>
+            <item value="REPROBADO"/>
+            <item value="EMITIDA"/>
+          </model>
+        </properties>
       </component>
       <component id="bfe62" class="javax.swing.JLabel">
         <constraints>
@@ -32,11 +40,23 @@
           <text value="TIPO "/>
         </properties>
       </component>
-      <component id="d1797" class="javax.swing.JComboBox" binding="comboBox4" default-binding="true">
+      <component id="d1797" class="javax.swing.JComboBox" binding="TIPO">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <model>
+            <item value="A"/>
+            <item value="B"/>
+            <item value="F"/>
+            <item value="A1"/>
+            <item value="C"/>
+            <item value="C1"/>
+            <item value="D"/>
+            <item value="E"/>
+            <item value="G"/>
+          </model>
+        </properties>
       </component>
       <component id="39634" class="javax.swing.JLabel">
         <constraints>
@@ -183,7 +203,7 @@
           <text value="EXPORTAR"/>
         </properties>
       </component>
-      <component id="f89b6" class="javax.swing.JFormattedTextField" binding="DDMMAAAAFormattedTextField" default-binding="true">
+      <component id="f89b6" class="javax.swing.JFormattedTextField" binding="desdeFecha">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
@@ -193,7 +213,7 @@
           <text value="DD/MM/AAAA"/>
         </properties>
       </component>
-      <component id="7f606" class="javax.swing.JFormattedTextField" binding="DDMMAAAAFormattedTextField1" default-binding="true">
+      <component id="7f606" class="javax.swing.JFormattedTextField" binding="hastaFecha">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>

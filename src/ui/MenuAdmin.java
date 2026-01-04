@@ -9,6 +9,7 @@ import java.awt.*;
  // Clase Administrador: Hereda Analista y añade gestión de usuarios y reportes
 
 public class MenuAdmin extends MenuAnalista {
+    private Usuario usuario;
 
     public MenuAdmin(Usuario usuario) {
         // Llama al constructor del padre (MenuAnalista)
@@ -33,10 +34,8 @@ public class MenuAdmin extends MenuAnalista {
         });
 
         btnReporteAdmin.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this,
-                    "Reporte administrativo (pendiente)",
-                    "Admin",
-                    JOptionPane.INFORMATION_MESSAGE);
+            new ReporteAdmin(usuario).setVisible(true);
+            this.dispose();
         });
     }
 }

@@ -2,6 +2,7 @@ package ui;
 
 import dao.TramiteDao;
 import model.Usuario;
+import ui.LoginFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,18 +19,19 @@ public class MenuAnalista extends BaseFrame {
     protected JButton btnExamenes;
     protected JTable table1;
     protected JButton btnLogin;
+    // ESTADOS
     protected JCheckBox EXAMENESCheckBox;
     protected JCheckBox APROBADOCheckBox;
     protected JCheckBox TODOSCheckBox;
     protected JCheckBox PENDIENTECheckBox;
+    private JCheckBox REPROBADOCheckBox;
+    private JCheckBox EMITIDACheckBox;
     protected JTextField txtCedula;
     protected JPanel mainPanel;
 
     // Solo admin (se ocultan aquí)
     protected JButton btnGestionarUsuario;
     protected JButton btnReporteAdmin;
-    private JCheckBox REPROBADOCheckBox;
-    private JCheckBox EMITIDACheckBox;
 
 
     public MenuAnalista(Usuario usuario) {
@@ -193,6 +195,11 @@ public class MenuAnalista extends BaseFrame {
 
             // new VentanaLicencia(idTramite).setVisible(true);
             cargarTablaPorEstado("TODOS");
+        });
+
+        btnLogin.addActionListener(e -> {
+            this.dispose();
+            new LoginFrame().setVisible(true);
         });
     }
 
