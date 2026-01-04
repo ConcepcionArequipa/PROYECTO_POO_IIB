@@ -1,6 +1,7 @@
 package ui;
 
 import dao.TramiteDao;
+import dao.UsuarioDao;
 import model.Usuario;
 import ui.LoginFrame;
 
@@ -58,6 +59,8 @@ public class MenuAnalista extends BaseFrame {
 
         accionesBotones();
 
+        txtCedula.addActionListener(e -> filtrarPorCedula());
+
         btnRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,7 +90,11 @@ public class MenuAnalista extends BaseFrame {
         switch (estado){
             case "PENDIENTE" -> btnVerificar.setEnabled(true);
             case "EXAMENES" -> btnExamenes.setEnabled(true);
-            case "APROBADO" ->btnGenerar.setEnabled(true);
+            case "REPROBADO" -> btnExamenes.setEnabled(true);
+            case "APROBADO" -> btnGenerar.setEnabled(true);
+            case "EMITIDA" -> {
+                // No se habilita nada
+            }
         }
 
     }
@@ -152,6 +159,22 @@ public class MenuAnalista extends BaseFrame {
         deshabilitarAcciones();
     }
 
+    private void filtrarPorCedula() {
+        String cedula = txtCedula.getText().trim();
+        DefaultTableModel modelo = (DefaultTableModel) table1.getModel();
+        modelo.setRowCount(0);
+
+        TramiteDao dao = new TramiteDao();
+        List<Object[]> lista = dao.buscarPorCedula(cedula);
+
+        for (Object[] fila : lista) {
+            modelo.addRow(fila);
+        }
+
+        deshabilitarAcciones();
+    }
+
+
 
 
     private void configurarFiltros() {
@@ -161,6 +184,8 @@ public class MenuAnalista extends BaseFrame {
         grupoEstados.add(PENDIENTECheckBox);
         grupoEstados.add(EXAMENESCheckBox);
         grupoEstados.add(APROBADOCheckBox);
+        grupoEstados.add(REPROBADOCheckBox);
+        grupoEstados.add(EMITIDACheckBox);
 
         // Seleccionar "TODOS" por defecto
         TODOSCheckBox.setSelected(true);
@@ -169,6 +194,8 @@ public class MenuAnalista extends BaseFrame {
         PENDIENTECheckBox.addActionListener(e -> cargarTablaPorEstado("PENDIENTE"));
         EXAMENESCheckBox.addActionListener(e -> cargarTablaPorEstado("EXAMENES"));
         APROBADOCheckBox.addActionListener(e -> cargarTablaPorEstado("APROBADO"));
+        REPROBADOCheckBox.addActionListener(e -> cargarTablaPorEstado("REPROBADO"));
+        EMITIDACheckBox.addActionListener(e -> cargarTablaPorEstado("EMITIDA"));
     }
 
     // ====== EJEMPLO DE ACCIONES ======
