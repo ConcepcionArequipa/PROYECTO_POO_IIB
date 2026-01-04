@@ -1,13 +1,15 @@
 package model;
 
 import java.time.LocalDate; //
+import java.util.Date;
+
 
 public class Solicitante {
     //Atributos privados para encapsulamiento
     private int idSolicitante;
     private String cedula;
     private String nombre;
-    private LocalDate fechaNacimiento; //Para validar la edad
+    private Date fechaNacimiento; //Para validar la edad
     private String tipoLicencia;
     private LocalDate fechaSolicitud;
 
@@ -44,11 +46,11 @@ public class Solicitante {
         this.nombre = nombre;
     }
 
-    public LocalDate getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

@@ -3,10 +3,13 @@ package ui;
 import model.Solicitante;
 import model.Usuario;
 import service.SolicitanteService;
-import service.TramiteService;
+
 import javax.swing.*;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class RegistrarSolicitante extends BaseFrame{
@@ -18,6 +21,8 @@ public class RegistrarSolicitante extends BaseFrame{
     private JPanel panelRegistro;
     private JComboBox jcbLicencia;
     private JTextField txtFecha;
+    private JFormattedTextField Fe_Nacimiento;
+
 
     public RegistrarSolicitante(Usuario usuario) {
         super("Registro de Solicitante",usuario);
@@ -27,26 +32,43 @@ public class RegistrarSolicitante extends BaseFrame{
     @Override
     public void initUI() {
         setContentPane(panelRegistro);
+        try {
+            MaskFormatter mask = new MaskFormatter("####-##-##");
+            mask.setPlaceholderCharacter('_');
+            Fe_Nacimiento.setFormatterFactory(new DefaultFormatterFactory(mask));
+        } catch (Exception e) {
+            mostrarError("Error al configurar la fecha");
+        }
+
+
         txtFecha.setEditable(false);
         txtFecha.setText(LocalDate.now().toString());
 
         //Listeners
-        jcbLicencia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        jcbLicencia.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {} });
 
-            }
-        });
+
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (Fe_Nacimiento.getText().contains("_")) {
+                        mostrarError("Complete correctamente la fecha de nacimiento.");
+                        return;
+                    }
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    java.util.Date d1 = sdf.parse(Fe_Nacimiento.getText());
+
+
                     Solicitante solicitante = new Solicitante();
                     solicitante.setCedula(txtCedula.getText());
                     solicitante.setNombre(txtNombre.getText());
+                    solicitante.setFechaNacimiento(d1);
                     solicitante.setTipoLicencia(jcbLicencia.getSelectedItem().toString());
                     SolicitanteService service = new SolicitanteService();
                     service.registrarSolicitante(solicitante);
+
                     mostrarMensaje("Solicitante registrado exitosamente");
                     txtCedula.setText("");
                     txtNombre.setText("");
@@ -57,6 +79,9 @@ public class RegistrarSolicitante extends BaseFrame{
                 }
             }
         });
+
+
+
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,11 +90,12 @@ public class RegistrarSolicitante extends BaseFrame{
                 jcbLicencia.setSelectedIndex(0); //Primer elemento
             }
         });
+
+
         btnRegresar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); //Cierra la ventana
-
             }
         });
     }

@@ -8,42 +8,6 @@ import java.sql.Statement;
 
 public class SolicitanteDao {
 
-    public int insertarYRetornarId(Solicitante s) {
-
-        String sql = "insert into solicitante "
-                + "(cedula, nombre, fecha_nacimiento, tipo_licencia, fecha_solicitud) "
-                + "values (?, ?, ?, ?, curdate())";
-
-        //try-with-resources
-        //Sirve para cerrar Connection, PreparedStament, ResultSet cuando termina el bloque try
-        try (
-                Connection con = new Conexion().getConexion();
-                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
-        ){
-
-            ps.setString(1, s.getCedula());
-            ps.setString(2, s.getNombre());
-            ps.setDate(3, java.sql.Date.valueOf(s.getFechaNacimiento())); // se usa sql.date para cambiar el tipo de dato a SQL
-            ps.setString(4, s.getTipoLicencia());
-
-            int filas= ps.executeUpdate();
-
-            if(filas == 0) {
-                return -1; //No se inserto nada
-            }
-
-            //Obtiene la id de la bd que se genero automaticamente
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if(rs.next()) {
-                    return rs.getInt(1); //Retorna el id generado
-                }
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error al insertar el solicitante",e);
-        }
-        return -1;
-    }
 
     public int insertarYRetornarId(Solicitante s, Connection con) {
 
@@ -59,7 +23,7 @@ public class SolicitanteDao {
 
             ps.setString(1, s.getCedula());
             ps.setString(2, s.getNombre());
-            ps.setDate(3, java.sql.Date.valueOf(s.getFechaNacimiento())); // se usa sql.date para cambiar el tipo de dato a SQL
+            ps.setDate(3,  new java.sql.Date(s.getFechaNacimiento().getTime())); // se usa sql.date para cambiar el tipo de dato a SQL
             ps.setString(4, s.getTipoLicencia());
 
             int filas= ps.executeUpdate();

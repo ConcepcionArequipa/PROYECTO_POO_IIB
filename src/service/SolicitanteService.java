@@ -75,15 +75,22 @@ public class SolicitanteService {
     }
 
     //Metodo para validar la edad del solicitante
-    private void validarEdad(LocalDate fechaNacimiento) throws Exception {
-        if(fechaNacimiento == null) {
+    private void validarEdad(java.util.Date fechaNacimiento) throws Exception {
+        if (fechaNacimiento == null) {
             throw new Exception("La fecha de nacimiento es obligatoria");
         }
-        int edad= Period.between(fechaNacimiento, LocalDate.now()).getYears();
-        if(edad < 18) {
-            throw new Exception("El solicitante deber ser mayor de 18 años");
+
+        LocalDate fechaLocal = fechaNacimiento.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+
+        int edad = Period.between(fechaLocal, LocalDate.now()).getYears();
+
+        if (edad < 18) {
+            throw new Exception("El solicitante debe ser mayor de 18 años");
         }
     }
+
 
     //Metodo para validar la cedula del solicitante
     private void validarCedula(String cedula) throws Exception {

@@ -39,7 +39,7 @@ public class ReporteAdmin extends JFrame {
         setContentPane(ReportePanel);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        cargarFechasIniciales();
+
         configurarTabla();
 
         // una mascara para hacer que solo en fechas se pueda incluir numeros
@@ -95,16 +95,6 @@ public class ReporteAdmin extends JFrame {
 
         table1.setModel(modelo);
         table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
-
-    private void cargarFechasIniciales() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        java.util.Calendar cal = java.util.Calendar.getInstance();
-        cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
-
-        desdeFecha.setText(sdf.format(cal.getTime()));
-        hastaFecha.setText(sdf.format(new java.util.Date()));
     }
 
 
