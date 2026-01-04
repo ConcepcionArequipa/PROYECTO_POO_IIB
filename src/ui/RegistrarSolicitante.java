@@ -21,6 +21,7 @@ public class RegistrarSolicitante extends BaseFrame{
 
     public RegistrarSolicitante(Usuario usuario) {
         super("Registro de Solicitante",usuario);
+        initUI();
 
     }
     @Override

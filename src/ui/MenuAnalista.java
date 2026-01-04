@@ -32,6 +32,7 @@ public class MenuAnalista extends BaseFrame {
     // Solo admin (se ocultan aquí)
     protected JButton btnGestionarUsuario;
     protected JButton btnReporteAdmin;
+    private Usuario usuario;
 
 
     public MenuAnalista(Usuario usuario) {
@@ -172,6 +173,10 @@ public class MenuAnalista extends BaseFrame {
 
     // ====== EJEMPLO DE ACCIONES ======
     private void accionesBotones() {
+
+        btnRegistrar.addActionListener(e -> {
+            new RegistrarSolicitante(usuario).setVisible(true);
+        });
 
         btnVerificar.addActionListener(e -> {
             int idTramite = obtenerIdTramiteSeleccionado();
