@@ -51,7 +51,20 @@ public class RequisitoService {
             }
         }catch(Exception e){
             if(con!=null){
+                try {
+                    con.rollback();
+                }catch(Exception ex){
+                    throw new Exception("Error en la transacción: "+ex.getMessage());
+                }
 
+            }
+        }finally{
+            if(con!=null){
+                try {
+                    con.close();
+                }catch(Exception ex){
+
+                }
             }
         }
 
