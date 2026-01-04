@@ -1,6 +1,8 @@
 package dao;
 
 import model.Tramite;
+import model.Usuario;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -201,5 +203,48 @@ public class TramiteDao {
         }
         return null;
     }
+
+    public List<Object[]> buscarPorCedula(String cedula) {
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = """
+        SELECT 
+            t.id,
+            s.cedula,
+            s.nombre,
+            s.tipo_licencia,
+            t.fecha_creacion,
+            t.estado
+        FROM tramite t
+        JOIN solicitante s ON s.id = t.solicitante_id
+        WHERE s.cedula = ?
+        ORDER BY t.fecha_creacion DESC
+    """;
+
+        try (Connection con = new Conexion().getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, cedula);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Object[] fila = {
+                        rs.getInt("id"),
+                        rs.getString("cedula"),
+                        rs.getString("nombre"),
+                        rs.getString("tipo_licencia"),
+                        rs.getDate("fecha_creacion"),
+                        rs.getString("estado")
+                };
+                lista.add(fila);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error buscar por cédula: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
 
 }
