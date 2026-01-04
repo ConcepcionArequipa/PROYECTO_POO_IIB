@@ -25,6 +25,22 @@ public class TramiteDao {
         }
     }
 
+    public boolean crear(int solicitanteId, Connection con){
+
+        String sql = "insert into tramite (solicitante_id, estado, fecha_creacion) " +
+                "values (?, 'pendiente', curdate())";
+        try(
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+            ps.setInt(1,solicitanteId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            System.out.printf("Error : "+ e.getMessage());
+            return false;
+        }
+    }
+
     public boolean actualizarEstado(int tramiteId , String estado){
         String sql = "update tramite set estado = ? where id =?";
 

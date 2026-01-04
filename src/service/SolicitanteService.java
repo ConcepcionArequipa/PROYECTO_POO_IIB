@@ -1,8 +1,11 @@
 package service;
 
+import dao.Conexion;
 import dao.SolicitanteDao;
 import dao.TramiteDao;
 import model.Solicitante;
+
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -24,32 +27,51 @@ public class SolicitanteService {
             throw new Exception("El nombre es obligatorio");
         }
 
-        //Llamar  al Dao
+        Connection con=null;
 
-        SolicitanteDao dao = new SolicitanteDao();
+        try {
+            con=new Conexion().getConexion();
+            con.setAutoCommit(false); //Inicio de transaccion atomica
+            //Llamar  al Dao
+            SolicitanteDao dao = new SolicitanteDao();
 
-        if (dao.existeCedula(solicitante.getCedula())){
-            throw new Exception("La cedula ya esta registrada");
+            TramiteDao tramiteDao = new TramiteDao();
+
+            if (dao.existeCedula(solicitante.getCedula(), con)){
+                throw new Exception("La cedula ya esta registrada");
+            }
+
+            // Insertar solicitante y obtener la ID
+            int idSolicitante= dao.insertarYRetornarId(solicitante,con);
+
+            if(idSolicitante <= 0) {
+                throw new Exception("No se pudo registrar el solicitante");
+            }
+
+            //Crear tramite inicial
+            // NOTA: se requiere que el DAO retorne el ID del solicitante
+
+            boolean ok= tramiteDao.crear(idSolicitante,con); // estado= pendiente
+
+            if(!ok) {
+                throw new Exception("No se pudo crear el tramite inicial");
+            }
+
+            con.commit(); //Es correcto
+        }
+        catch (Exception e) {
+            if(con != null) {
+                con.rollback(); //Se deshace
+            }
+
+            throw e;
+        }
+        finally {
+            if(con != null) {
+                con.close();
+            }
         }
 
-        // Insertar solicitante y obtener la ID
-
-        int idSolicitante= dao.insertarYRetornarId(solicitante);
-
-        if(idSolicitante <= 0) {
-           throw new Exception("No se pudo registrar el solicitante");
-        }
-
-        //Crear tramite inicial
-
-        // NOTA: se requiere que el DAO retorne el ID del solicitante
-
-        TramiteDao tramiteDao = new TramiteDao();
-
-       boolean ok= tramiteDao.crear(idSolicitante); // estado= pendiente
-        if(!ok) {
-            throw new Exception("No se pudo crear el tramite inicial");
-        }
     }
 
     //Metodo para validar la edad del solicitante
