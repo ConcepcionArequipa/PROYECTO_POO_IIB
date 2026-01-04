@@ -7,6 +7,4 @@ public class GenerarLicencia {
     private JButton GENERARButton;
     private JButton REGRESARButton;
     private JTextPane textPane1;
-
-
 }
