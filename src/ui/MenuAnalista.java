@@ -240,9 +240,9 @@ public class MenuAnalista extends BaseFrame {
         });
 
         btnLogin.addActionListener(e -> {
-            this.dispose();
-            new LoginFrame().setVisible(true);
+            cerrarSesion();
         });
+
     }
 
 
