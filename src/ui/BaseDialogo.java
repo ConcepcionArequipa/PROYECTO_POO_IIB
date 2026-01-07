@@ -25,4 +25,9 @@ public abstract class BaseDialogo extends JDialog {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje,"Informacion",JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
 }
