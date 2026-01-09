@@ -2,14 +2,15 @@ package ui;
 
 import model.Usuario;
 
+import model.Requisito;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
 
-import service.TramiteService;
+import service.RequisitosService;
 
-import dao.TramiteDao;
 
 public class VerificarRequisito extends BaseDialogo {
     private JButton REGRESARButton;
@@ -34,14 +35,16 @@ public class VerificarRequisito extends BaseDialogo {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    Requisito requisito = new Requisito();
+                    requisito.setTramiteId(tramiteId);
+                    requisito.setCertificadoMedico(CBcertificado.isSelected());
+                    requisito.setPago(CBpago.isSelected());
+                    requisito.setMultas(CBmultas.isSelected());
+                    requisito.setObservaciones(txtObservaciones.getText());
 
-                    boolean certificadoMedico=CBcertificado.isSelected();
-                    boolean pago=CBpago.isSelected();
-                    boolean multas=CBmultas.isSelected();
+                    RequisitosService requisitoService = new RequisitosService();
+                    requisitoService.verificarRequisitos(requisito);
 
-                   TramiteService tramiteService = new TramiteService();
-
-                   tramiteService.validarRequisitos(tramiteId,certificadoMedico,pago,multas);
 
                    mostrarMensaje("Requisitos aprobados. Trámite enviado a exámenes.");
 
