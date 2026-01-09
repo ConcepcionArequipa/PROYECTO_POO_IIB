@@ -26,11 +26,14 @@ public class VerificarRequisito extends BaseDialogo {
     public VerificarRequisito(Frame parent,Usuario usuario,int tramiteId) {
         super(parent,"Verificacion de requisitos del solicitante",usuario);
         this.tramiteId = tramiteId;
+
     }
 
     @Override
     public void initUI() {
         setContentPane(panelVerificacion);
+        pack();
+        setLocationRelativeTo(getParent());
         APROBARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,6 +56,37 @@ public class VerificarRequisito extends BaseDialogo {
                 }catch (Exception ex) {
                     mostrarError(ex.getMessage());
                 }
+            }
+        });
+
+        RECHAZARButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    //Crear el objeto requisito
+
+                    Requisito requisito = new Requisito();
+                    requisito.setTramiteId(tramiteId);
+                    requisito.setCertificadoMedico(CBcertificado.isSelected());
+                    requisito.setPago(CBpago.isSelected());
+                    requisito.setMultas(CBmultas.isSelected());
+                    requisito.setObservaciones(txtObservaciones.getText());
+
+                    //LLamar a service
+
+                    RequisitosService requisitoService = new RequisitosService();
+                    requisitoService.rechazarRequisitos(requisito);
+                    mostrarMensaje("EL tramite fue rechazado correctamente");
+                    dispose();
+
+                }
+                catch (Exception ex) {
+                    mostrarError(ex.getMessage());
+                }
+
+
+
             }
         });
 

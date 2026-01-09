@@ -47,7 +47,7 @@ public class RequisitosService {
             // Regla de negocio
 
             if (r.isCertificadoMedico() && r.isPago() && r.isMultas()) {
-                boolean estadoOk= tramiteDao.actualizarEstado(r.getTramiteId(),"EN_EXAMENES",con);
+                boolean estadoOk= tramiteDao.actualizarEstado(r.getTramiteId(),"EXAMENES",con);
 
                 if (!estadoOk) {
                     throw new Exception("No se pudo actualizar el estado del tramite");

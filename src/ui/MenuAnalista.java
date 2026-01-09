@@ -4,6 +4,7 @@ import dao.TramiteDao;
 import dao.UsuarioDao;
 import model.Usuario;
 import ui.LoginFrame;
+import ui.VerificarRequisito;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -214,6 +215,16 @@ public class MenuAnalista extends BaseFrame {
         btnVerificar.addActionListener(e -> {
             int idTramite = obtenerIdTramiteSeleccionado();
             if (idTramite == -1) return;
+
+            VerificarRequisito dialogo= new VerificarRequisito(
+                    this,
+                    usuarioLogueado,
+                    idTramite
+
+            );
+            dialogo.setVisible(true);
+
+
 
             // new VentanaRequisitos(idTramite).setVisible(true);
             cargarTablaPorEstado("TODOS");

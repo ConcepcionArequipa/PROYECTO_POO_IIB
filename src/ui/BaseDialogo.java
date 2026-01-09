@@ -15,7 +15,6 @@ public abstract class BaseDialogo extends JDialog {
         setLocationRelativeTo(parent);  // Se centra sobre la ventana padre
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
-        initUI();
     }
 
     public abstract void initUI();
