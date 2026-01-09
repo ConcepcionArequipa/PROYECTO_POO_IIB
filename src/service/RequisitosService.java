@@ -66,4 +66,60 @@ public class RequisitosService {
         }
     }
 
+    public void rechazarRequisitos(Requisito r) throws Exception {
+        if (r == null) {
+            throw new Exception("Requisito inválido");
+        }
+
+        if (r.getTramiteId() <=0) {
+            throw new Exception("ID de tramite invalido");
+        }
+
+        if (r.getObservaciones() == null || r.getObservaciones().trim().isEmpty()) {
+            throw new Exception("Es obligatorio ingresar observaciones");
+        }
+        Connection con = null;
+        try {
+            con = new Conexion().getConexion();
+            con.setAutoCommit(false);
+            RequisitosDao requisitosDao = new RequisitosDao();
+            TramiteDao tramiteDao = new TramiteDao();
+
+            //Consultar el estado actual
+
+            String estadoActual= tramiteDao.obtenerEstado(r.getTramiteId(),con);
+
+            if (estadoActual==null) {
+                throw new Exception("Tramite no encontrado");
+            }
+            //Validar si el tramite = PENDIENTE
+            if (!"PENDIENTE".equalsIgnoreCase(estadoActual)) {
+                throw new Exception("Solo se puede rechazar si el tramite esta en estado PENDIENTE");
+            }
+
+            // Guardar requisitos + observaciones
+            boolean okRequisitos = requisitosDao.actualizar(r, con);
+            if (!okRequisitos) {
+                throw new Exception("No se pudo guardar las observaciones");
+            }
+
+            //Cambiar estado a RECHAZADO
+
+            boolean okEstado= tramiteDao.actualizarEstado(r.getTramiteId(),"RECHAZADO",con);
+
+            if (!okEstado) {
+                throw new Exception("No se pudo actualizar el estado del tramite");
+            }
+            con.commit();
+
+        } catch (Exception e) {
+            if (con != null) con.rollback();
+            throw e;
+        }finally {
+            if (con != null) con.close();
+        }
+
+
+    }
+
 }
