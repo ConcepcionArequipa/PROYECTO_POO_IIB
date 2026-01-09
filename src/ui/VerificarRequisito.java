@@ -26,6 +26,8 @@ public class VerificarRequisito extends BaseDialogo {
     public VerificarRequisito(Frame parent,Usuario usuario,int tramiteId) {
         super(parent,"Verificacion de requisitos del solicitante",usuario);
         this.tramiteId = tramiteId;
+        initUI();
+        setVisible(true);
 
     }
 
