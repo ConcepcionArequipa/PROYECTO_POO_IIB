@@ -74,6 +74,12 @@ public class MenuAnalista extends BaseFrame {
 
             }
         });
+        btnExamenes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
 
@@ -233,6 +239,16 @@ public class MenuAnalista extends BaseFrame {
         btnExamenes.addActionListener(e -> {
             int idTramite = obtenerIdTramiteSeleccionado();
             if (idTramite == -1) return;
+            RegistrarExamen dialogo= new RegistrarExamen(
+                    this,
+                    usuarioLogueado,
+                    idTramite
+
+            );
+            dialogo.setVisible(true);
+
+
+
 
             // new VentanaExamenes(idTramite).setVisible(true);
             cargarTablaPorEstado("TODOS");
