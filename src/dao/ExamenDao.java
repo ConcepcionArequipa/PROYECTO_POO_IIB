@@ -5,18 +5,19 @@ import java.sql.*;
 
 public class ExamenDao {
 
-    public boolean registrar(Examen e){
+    public boolean registrar(Examen e, Connection con) {
 
         String sql = """
                 insert into examen 
                 (tramite_id,nota_teorica , nota_practica, fecha_registro)
                 values(?,?,?,curdate())
+                ON DUPLICATE KEY UPDATE
+                                 nota_teorica =VALUES(nota_teorica),
+                                                   nota_practica=VALUES(nota_practica)
                 """;
 
-        try{
-
-            Connection com = new Conexion().getConexion();
-            PreparedStatement ps = com.prepareStatement(sql);
+        try(PreparedStatement ps = con.prepareStatement(sql))
+        {
 
             ps.setInt(1,e.getTramiteId());
             ps.setDouble(2,e.getNotaTeorica());
