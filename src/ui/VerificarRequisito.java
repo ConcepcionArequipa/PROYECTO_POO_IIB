@@ -54,7 +54,11 @@ public class VerificarRequisito extends BaseDialogo {
                     RequisitosService requisitoService = new RequisitosService();
                     requisitoService.verificarRequisitos(requisito);
 
-                    mostrarMensaje("Requisitos aprobados. Trámite enviado a exámenes.");
+                    mostrarMensaje("Requisitos aprobados exitosamente");
+                    CBcertificado.setSelected(false);
+                    CBpago.setSelected(false);
+                    CBmultas.setSelected(false);
+                    txtObservaciones.setText("");
 
                    dispose(); //Cerrar
 
@@ -70,7 +74,6 @@ public class VerificarRequisito extends BaseDialogo {
 
                 try {
                     //Crear el objeto requisito
-
                     Requisito requisito = new Requisito();
                     requisito.setTramiteId(tramiteId);
                     requisito.setCertificadoMedico(CBcertificado.isSelected());
@@ -83,6 +86,10 @@ public class VerificarRequisito extends BaseDialogo {
                     RequisitosService requisitoService = new RequisitosService();
                     requisitoService.rechazarRequisitos(requisito);
                     mostrarMensaje("EL tramite fue rechazado correctamente");
+                    CBcertificado.setSelected(false);
+                    CBpago.setSelected(false);
+                    CBmultas.setSelected(false);
+                    txtObservaciones.setText("");
                     dispose();
 
                 }
@@ -92,6 +99,33 @@ public class VerificarRequisito extends BaseDialogo {
 
 
 
+            }
+        });
+
+        REGRESARButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                boolean hayCambios =
+                        CBcertificado.isSelected() ||
+                                CBpago.isSelected() ||
+                                CBmultas.isSelected() ||
+                                !txtObservaciones.getText().trim().isEmpty();
+
+                if (hayCambios) {
+                    int opcion = JOptionPane.showConfirmDialog(
+                            VerificarRequisito.this,
+                            " Esta seguro de salir?",
+                            "Confirmar",
+                            JOptionPane.YES_NO_OPTION
+                    );
+
+                    if (opcion != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+
+                dispose();
             }
         });
 

@@ -60,10 +60,6 @@ public class RequisitosService {
                 throw new Exception("No se pudo actualizar el estado del tramite");
             }
 
-
-
-
-
             con.commit(); //Commit final
 
         } catch (Exception e) {
@@ -85,6 +81,12 @@ public class RequisitosService {
 
         if (r.getObservaciones() == null || r.getObservaciones().trim().isEmpty()) {
             throw new Exception("Es obligatorio ingresar observaciones");
+        }
+
+        //Validacion de requisitos al momento de rechazar
+
+        if (r.isCertificadoMedico() && r.isPago() && r.isMultas()) {
+            throw new Exception("No se puede rechazar si todos los requisitos estan completos");
         }
         Connection con = null;
         try {
