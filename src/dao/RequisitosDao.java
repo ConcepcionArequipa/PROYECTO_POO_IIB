@@ -27,25 +27,27 @@ public class RequisitosDao {
 
     //Sobrecarga para transacciones, requerido para las reglas de negocio
 
-    public boolean actualizar (Requisito r, Connection con){
+    public boolean actualizar (Requisito r, Connection con) throws Exception{
 
         String sql = """
-                update requisitos set
-                certificado_medico = ?,
-                pago = ?,
-                multas =?,
-                observaciones = ?
-                where tramite_id =?
+                INSERT INTO requisitos (tramite_id, certificado_medico, pago, multas, observaciones)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                                 certificado_medico = VALUES(certificado_medico),
+                                                          pago= VALUES(pago),
+                                                                    multas= VALUES(multas),
+                                                                                observaciones= VALUES(observaciones);
                 """;
 
         try(
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
-            ps.setBoolean(1,r.isCertificadoMedico());
-            ps.setBoolean(2,r.isPago());
-            ps.setBoolean(3,r.isMultas());
-            ps.setString(4,r.getObservaciones());
-            ps.setInt(5,r.getTramiteId());
+            ps.setInt(1,r.getTramiteId());
+            ps.setBoolean(2,r.isCertificadoMedico());
+            ps.setBoolean(3,r.isPago());
+            ps.setBoolean(4,r.isMultas());
+            ps.setString(5,r.getObservaciones());
+
 
             return ps.executeUpdate() >0;
 
@@ -80,4 +82,6 @@ public class RequisitosDao {
         }
 
     }
+
+
 }
