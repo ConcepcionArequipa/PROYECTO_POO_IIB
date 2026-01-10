@@ -40,6 +40,10 @@ public class VerificarRequisito extends BaseDialogo {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    if (!CBcertificado.isSelected() || !CBpago.isSelected() || !CBmultas.isSelected()) {
+                        mostrarError("Debe marcar todos los requisitos para aprobar");
+                        return;
+                    }
                     Requisito requisito = new Requisito();
                     requisito.setTramiteId(tramiteId);
                     requisito.setCertificadoMedico(CBcertificado.isSelected());
@@ -50,8 +54,7 @@ public class VerificarRequisito extends BaseDialogo {
                     RequisitosService requisitoService = new RequisitosService();
                     requisitoService.verificarRequisitos(requisito);
 
-
-                   mostrarMensaje("Requisitos aprobados. Trámite enviado a exámenes.");
+                    mostrarMensaje("Requisitos aprobados. Trámite enviado a exámenes.");
 
                    dispose(); //Cerrar
 

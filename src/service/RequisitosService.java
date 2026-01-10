@@ -38,21 +38,29 @@ public class RequisitosService {
                 throw new Exception("Solo se puede verificar los requisitos si el tramite esta en estado PENDIENTE");
             }
 
+            // Regla de negocio, validacion
+
+            if (!r.isCertificadoMedico() || !r.isPago() || !r.isMultas()) {
+                throw new Exception("Para aprobar, todos los requisitos deben estar marcados");
+
+
+
+            }
+
             // Guardar requisitos + observaciones
             boolean ok = requisitosDao.actualizar(r, con);
             if (!ok) {
                 throw new Exception("No se pudo guardar los requisitos");
             }
 
-            // Regla de negocio
+            //Cambiar el estado
+            boolean estadoOk= tramiteDao.actualizarEstado(r.getTramiteId(),"EXAMENES",con);
 
-            if (r.isCertificadoMedico() && r.isPago() && r.isMultas()) {
-                boolean estadoOk= tramiteDao.actualizarEstado(r.getTramiteId(),"EXAMENES",con);
-
-                if (!estadoOk) {
-                    throw new Exception("No se pudo actualizar el estado del tramite");
-                }
+            if (!estadoOk) {
+                throw new Exception("No se pudo actualizar el estado del tramite");
             }
+
+
 
 
 
@@ -102,14 +110,7 @@ public class RequisitosService {
             if (!okRequisitos) {
                 throw new Exception("No se pudo guardar las observaciones");
             }
-
-            //Cambiar estado a RECHAZADO
-
-            boolean okEstado= tramiteDao.actualizarEstado(r.getTramiteId(),"RECHAZADO",con);
-
-            if (!okEstado) {
-                throw new Exception("No se pudo actualizar el estado del tramite");
-            }
+            //No se cambia el estado
             con.commit();
 
         } catch (Exception e) {
