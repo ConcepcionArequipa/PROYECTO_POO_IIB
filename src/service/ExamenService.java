@@ -41,8 +41,8 @@ public class ExamenService {
                 throw new Exception("Tramite no encontrado");
             }
 
-            if (!"EXAMENES".equalsIgnoreCase(estadoActual)) {
-                throw new Exception("El tramite no se encuentra en este estado");
+            if (!"EXAMENES".equalsIgnoreCase(estadoActual) && !"REPROBADO".equalsIgnoreCase(estadoActual)) {
+                throw new Exception("Solo se pueden registrar notas para trámites en estado EXAMENES o REPROBADO. Estado actual: " + estadoActual);
             }
 
             //Registrar la nota del examen

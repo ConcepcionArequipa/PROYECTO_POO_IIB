@@ -4,13 +4,14 @@ import dao.Conexion;
 import dao.SolicitanteDao;
 import dao.TramiteDao;
 import model.Solicitante;
+import model.Usuario;
 
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.Period;
 
 public class SolicitanteService {
-    public void registrarSolicitante(Solicitante solicitante) throws Exception {
+    public void registrarSolicitante(Solicitante solicitante, Usuario usuario) throws Exception {
         //Validaciones de negocio
 
         //Validar si el solicitante es nulo
@@ -50,8 +51,9 @@ public class SolicitanteService {
 
             //Crear tramite inicial
             // NOTA: se requiere que el DAO retorne el ID del solicitante
+            // Dentro de registrarSolicitante, antes de tramiteDao.crear
 
-            boolean ok= tramiteDao.crear(idSolicitante,con); // estado= pendiente
+            boolean ok=  tramiteDao.crear(idSolicitante, usuario.getIdUsuario(),con); // estado= pendiente
 
             if(!ok) {
                 throw new Exception("No se pudo crear el tramite inicial");

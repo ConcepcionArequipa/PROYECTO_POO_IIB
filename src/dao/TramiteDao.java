@@ -10,15 +10,16 @@ import java.util.List;
 
 public class TramiteDao {
 
-    public boolean crear(int solicitanteId){
+    public boolean crear(int solicitanteId,int usuarioId){
 
-        String sql = "insert into tramite (solicitante_id, estado, fecha_creacion) " +
-                      "values (?, 'PENDIENTE', curdate())";
+        String sql = "insert into tramite (solicitante_id, estado, fecha_creacion, created_by) " +
+                      "values (?, 'PENDIENTE', curdate(),?)";
         try(
                 Connection con = new Conexion().getConexion();
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
             ps.setInt(1,solicitanteId);
+            ps.setInt(2, usuarioId);
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -27,14 +28,14 @@ public class TramiteDao {
         }
     }
 
-    public boolean crear(int solicitanteId, Connection con){
-
-        String sql = "insert into tramite (solicitante_id, estado, fecha_creacion) " +
-                "values (?, 'PENDIENTE', curdate())";
+    public boolean crear(int solicitanteId,int usuarioId,Connection con){
+        String sql = "insert into tramite (solicitante_id, estado, fecha_creacion,created_by) " +
+                "values (?, 'PENDIENTE', curdate(),?)";
         try(
                 PreparedStatement ps = con.prepareStatement(sql)
         ) {
             ps.setInt(1,solicitanteId);
+            ps.setInt(2, usuarioId);
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {

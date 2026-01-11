@@ -3,6 +3,7 @@ import dao.Conexion;
 import dao.TramiteDao;
 import dao.LicenciaDao;
 import model.Licencia;
+import model.Usuario;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -13,12 +14,12 @@ public class TramiteService {
 
     //Crear tramite inicial
 
-    public void crearTramiteInicial(int solicitanteId) throws Exception {
+    public void crearTramiteInicial(int solicitanteId, Usuario usuario) throws Exception {
         if (solicitanteId <= 0) {
             throw new Exception("ID de solicitante invalido");
         }
 
-        boolean ok = tramiteDao.crear(solicitanteId);
+        boolean ok = tramiteDao.crear(solicitanteId, usuario.getIdUsuario());
         if(!ok) {
             throw new Exception("No se pudo crear el tramite inicial");
         }

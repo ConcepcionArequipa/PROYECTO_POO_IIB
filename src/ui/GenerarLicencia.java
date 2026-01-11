@@ -53,6 +53,7 @@ public class GenerarLicencia extends JFrame {
                 "</body></html>";
         textPane1.setText(contenido);
         textPane1.setEditable(false);
+        GENERARButton.setEnabled(false);
 
         // Configurar botones
         configurarBotones();
@@ -123,6 +124,7 @@ public class GenerarLicencia extends JFrame {
                 documento.add(new Paragraph("TIPO DE LICENCIA: " + datosFila[3]));
                 documento.add(new Paragraph("ESTADO: EMITIDA"));
                 documento.add(new Paragraph("FECHA DE EMISIÓN: " + java.time.LocalDate.now()));
+                documento.add(new Paragraph("FECHA DE CADUCIDAD: " + java.time.LocalDate.now().plusYears(5)));
 
                 documento.add(new LineSeparator(new SolidLine()));
                 documento.add(new Paragraph("\nEste documento es un comprobante oficial del sistema."));

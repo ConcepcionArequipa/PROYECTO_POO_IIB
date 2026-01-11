@@ -22,10 +22,11 @@ public class RegistrarSolicitante extends BaseFrame{
     private JComboBox jcbLicencia;
     private JTextField txtFecha;
     private JFormattedTextField Fe_Nacimiento;
+    private Usuario usuarioLogueado;
 
-
-    public RegistrarSolicitante(Usuario usuario) {
-        super("Registro de Solicitante",usuario);
+    public RegistrarSolicitante(Usuario usuarioRecibido) {
+        super("Registro de Solicitante",usuarioRecibido);
+        this.usuarioLogueado = usuarioRecibido;
         initUI();
 
     }
@@ -53,7 +54,7 @@ public class RegistrarSolicitante extends BaseFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     String cedula = txtCedula.getText().trim();
-                    String nombre = txtNombre.getText().trim();
+                    String nombre = txtNombre.getText().trim().toUpperCase();
 
                     if (cedula.isEmpty()) {
                         mostrarError("Campo Cedula vacio o Menor a 10 Digitos.");
@@ -77,11 +78,11 @@ public class RegistrarSolicitante extends BaseFrame{
 
                     Solicitante solicitante = new Solicitante();
                     solicitante.setCedula(txtCedula.getText());
-                    solicitante.setNombre(txtNombre.getText());
+                    solicitante.setNombre(nombre);
                     solicitante.setFechaNacimiento(d1);
                     solicitante.setTipoLicencia(jcbLicencia.getSelectedItem().toString());
                     SolicitanteService service = new SolicitanteService();
-                    service.registrarSolicitante(solicitante);
+                    service.registrarSolicitante(solicitante,usuarioLogueado);
 
                     mostrarMensaje("Solicitante registrado exitosamente");
                     txtCedula.setText("");

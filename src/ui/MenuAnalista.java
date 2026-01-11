@@ -34,13 +34,15 @@ public class MenuAnalista extends BaseFrame {
     // Solo admin (se ocultan aquí)
     protected JButton btnGestionarUsuario;
     protected JButton btnReporteAdmin;
-    private Usuario usuario;
+    private final Usuario usuario;
 
 
     public MenuAnalista(Usuario usuario) {
 
+
         // Llama al constructor de BaseFrame para configurar título, tamaño y centrado
         super("Panel de Gestión - Analista",usuario);
+        this.usuario = usuario;
         initUI();
 
         // ACCIONES NO SE PUEDEN REALIZAR SI NO SE SELECCIONA EN LA TABLA
@@ -224,7 +226,7 @@ public class MenuAnalista extends BaseFrame {
 
             VerificarRequisito dialogo= new VerificarRequisito(
                     this,
-                    usuarioLogueado,
+                    usuario,
                     idTramite
 
             );
@@ -241,7 +243,7 @@ public class MenuAnalista extends BaseFrame {
             if (idTramite == -1) return;
             RegistrarExamen dialogo= new RegistrarExamen(
                     this,
-                    usuarioLogueado,
+                    usuario,
                     idTramite
 
             );
@@ -267,7 +269,7 @@ public class MenuAnalista extends BaseFrame {
 
             // 2. Abrimos la ventana de GenerarLicencia pasando los datos
             // Usamos una ventana modal para que el analista termine este proceso
-            new GenerarLicencia(datosFila, usuarioLogueado).setVisible(true);
+            new GenerarLicencia(datosFila, usuario).setVisible(true);
 
             cargarTablaPorEstado("TODOS");
         });
