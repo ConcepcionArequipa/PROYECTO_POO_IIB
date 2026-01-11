@@ -20,7 +20,7 @@ del sistema de entrega de licencias desarrollado en Java con Swing y base de dat
 - Control de versiones: Git / GitHub
 - Exportación de reportes: CSV y PDF (iText)
 
-
+- Usa esta ruta para obtener java 17 : [java 17](https://adoptium.net/es/temurin/releases?version=17)
 
 ## Arquitectura del Sistema
 
