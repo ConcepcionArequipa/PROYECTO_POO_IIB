@@ -34,6 +34,11 @@ public class VerificarRequisito extends BaseDialogo {
     @Override
     public void initUI() {
         setContentPane(panelVerificacion);
+        // 1. Establece un tamaño preferido (Ancho, Alto)
+        panelVerificacion.setPreferredSize(new Dimension(1200, 600));
+        panelVerificacion.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
         pack();
         setLocationRelativeTo(getParent());
         APROBARButton.addActionListener(new ActionListener() {

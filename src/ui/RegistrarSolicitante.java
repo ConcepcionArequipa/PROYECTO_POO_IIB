@@ -28,6 +28,7 @@ public class RegistrarSolicitante extends BaseFrame{
         super("Registro de Solicitante",usuarioRecibido);
         this.usuarioLogueado = usuarioRecibido;
         initUI();
+        setSize(600,400);
 
     }
     @Override

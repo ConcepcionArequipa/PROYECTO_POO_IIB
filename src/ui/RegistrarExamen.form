@@ -5,24 +5,29 @@
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-4333569"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="b8448" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
           <text value="NOTA PRACTICA: "/>
         </properties>
       </component>
       <component id="5ff45" class="javax.swing.JTextField" binding="txtNotaPractica">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
+        </properties>
       </component>
       <component id="8b788" class="javax.swing.JTextField" binding="txtNotaTeorica">
         <constraints>
@@ -30,22 +35,17 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
+        </properties>
       </component>
       <component id="7b25" class="javax.swing.JLabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
           <text value="NOTA TEORICA: "/>
-        </properties>
-      </component>
-      <component id="7fdb4" class="javax.swing.JButton" binding="btnRegresar">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="REGRESAR"/>
         </properties>
       </component>
       <component id="8a31b" class="javax.swing.JLabel">
@@ -53,15 +53,26 @@
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Bookshelf Symbol 7" size="15" style="1"/>
           <text value="REGISTRO DE EXAMENES"/>
         </properties>
       </component>
       <component id="adfe" class="javax.swing.JButton" binding="btnGuardar">
         <constraints>
-          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
           <text value="GUARDAR"/>
+        </properties>
+      </component>
+      <component id="7fdb4" class="javax.swing.JButton" binding="btnRegresar">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bookshelf Symbol 7" size="14"/>
+          <text value="REGRESAR"/>
         </properties>
       </component>
     </children>

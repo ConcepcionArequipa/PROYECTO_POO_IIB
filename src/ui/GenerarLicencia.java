@@ -44,7 +44,10 @@ public class GenerarLicencia extends JFrame {
         int tramiteId = (int) datosFila[0]; // ID del trámite
 
         setContentPane(generarPanel);
-        setSize(500, 600);
+        generarPanel.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
+        setSize(700, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("GENERAR - LICENCIA");
 

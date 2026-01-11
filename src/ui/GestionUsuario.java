@@ -30,9 +30,12 @@ public class GestionUsuario extends JFrame {
         this.usuario = usuario;
 
         setTitle("Gestión de Usuarios");
-        setSize(800, 500);
+        setSize(1200, 600);
         setLocationRelativeTo(null);
         setContentPane(JPgestion);
+        JPgestion.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         configurarTabla();
@@ -169,6 +172,25 @@ public class GestionUsuario extends JFrame {
             JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
             return;
         }
+        // 2. Validación de longitud (10 dígitos)
+        if (cedula.length() != 10) {
+            JOptionPane.showMessageDialog(this, "La cédula debe tener exactamente 10 dígitos");
+            return;
+        }
+
+        // 3. Validación de formato numérico
+        if (!cedula.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "La cédula solo debe contener números");
+            return;
+        }
+
+        UsuarioDao dao = new UsuarioDao();
+
+        // 4. Validación de Unicidad (Cédula única)
+        if (dao.buscarPorCedula(cedula) != null) {
+            JOptionPane.showMessageDialog(this, "Error: Ya existe un usuario registrado con esa cédula");
+            return;
+        }
 
         Usuario user = new Usuario();
         user.setNombre(nombre);
@@ -177,7 +199,7 @@ public class GestionUsuario extends JFrame {
         user.setRol(ADMINCheckBox.isSelected() ? "admin" : "analista");
         user.setActivo(ACTIVOCheckBox.isSelected());
 
-        UsuarioDao dao = new UsuarioDao();
+
 
         if (dao.insertar(user, password)) {
             JOptionPane.showMessageDialog(this, "Usuario creado correctamente");
@@ -187,33 +209,57 @@ public class GestionUsuario extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al crear usuario");
         }
     }
-
     private void actualizarUsuario() {
-
         int fila = table1.getSelectedRow();
         if (fila == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un usuario de la tabla");
             return;
         }
 
-        int id = (int) table1.getValueAt(fila, 0);
+        // 1. Obtener los valores de los campos
+        String nombre = txtNombre.getText().trim();
+        String cedula = txtCedula.getText().trim();
+        String username = txtUsername.getText().trim();
 
+        // 2. Validación de campos vacíos (Obligatorio para evitar errores de BD)
+        if (nombre.isEmpty() || cedula.isEmpty() || username.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos (Nombre, Cédula, Username) son obligatorios");
+            return;
+        }
+
+        // 3. Validación de formato de cédula (10 dígitos numéricos)
+        if (cedula.length() != 10 || !cedula.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "La cédula debe tener exactamente 10 dígitos numéricos");
+            return;
+        }
+
+        // 4. Validación de unicidad de cédula
+        int id = (int) table1.getValueAt(fila, 0);
+        String cedulaOriginal = table1.getValueAt(fila, 2).toString();
+        UsuarioDao dao = new UsuarioDao();
+
+        if (!cedula.equals(cedulaOriginal)) {
+            if (dao.buscarPorCedula(cedula) != null) {
+                JOptionPane.showMessageDialog(this, "Error: Esta cédula ya pertenece a otro usuario");
+                return;
+            }
+        }
+
+        // Tu lógica original de mapeo
         Usuario user = new Usuario();
         user.setIdUsuario(id);
-        user.setNombre(txtNombre.getText().trim());
-        user.setCedula(txtCedula.getText().trim());
-        user.setUsuario(txtUsername.getText().trim());
+        user.setNombre(nombre);
+        user.setCedula(cedula);
+        user.setUsuario(username);
         user.setRol(ADMINCheckBox.isSelected() ? "admin" : "analista");
         user.setActivo(ACTIVOCheckBox.isSelected());
 
-        UsuarioDao dao = new UsuarioDao();
-
         if (dao.actualizarUsuario(user)) {
-            JOptionPane.showMessageDialog(this, "Usuario actualizado");
+            JOptionPane.showMessageDialog(this, "Usuario actualizado correctamente");
             cargarTabla();
             limpiarFormulario();
         } else {
-            JOptionPane.showMessageDialog(this, "Error al actualizar");
+            JOptionPane.showMessageDialog(this, "Error al actualizar en la base de datos");
         }
     }
 

@@ -17,7 +17,7 @@ public class LoginFrame extends BaseFrame {
 
     public LoginFrame() {
         super("Iniciar Sesion",null); //null porque aun no se inicia sesion
-        setSize(420,420);
+        setSize(600,600);
         setLocationRelativeTo(null);
         initUI();
     }
@@ -25,6 +25,10 @@ public class LoginFrame extends BaseFrame {
     @Override
     public void initUI(){
         setContentPane(jpLogin);
+        jpLogin.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Logica de los botones

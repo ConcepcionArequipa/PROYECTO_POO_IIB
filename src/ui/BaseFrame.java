@@ -12,7 +12,7 @@ public abstract class BaseFrame extends JFrame {
         this.usuarioLogueado = usuario;
         //Diseño estandar
         setTitle(titulo);
-        setSize(900, 600);
+        setSize(1200, 600);
         setResizable(false); //No cambia el tamaño
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

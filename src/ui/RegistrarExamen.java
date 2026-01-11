@@ -30,6 +30,14 @@ public class RegistrarExamen extends BaseDialogo{
     @Override
     public void initUI() {
         setContentPane(panelExamenes);
+
+        // 1. Establece un tamaño preferido (Ancho, Alto)
+        panelExamenes.setPreferredSize(new Dimension(500, 400));
+
+        panelExamenes.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
+
         pack();
         setLocationRelativeTo(getParent());
         btnGuardar.addActionListener(new ActionListener() {

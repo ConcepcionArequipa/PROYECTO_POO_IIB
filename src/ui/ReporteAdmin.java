@@ -36,9 +36,13 @@ public class ReporteAdmin extends JFrame {
     public ReporteAdmin(Usuario usuario) {
         this.usuario = usuario;
         setTitle("REPORTE - ADMIN");
-        setSize(900, 600);
+        setSize(1000, 600);
         setLocationRelativeTo(null);
         setContentPane(ReportePanel);
+        ReportePanel.setBorder(
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        );
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // 1. Configurar la estructura de la tabla
