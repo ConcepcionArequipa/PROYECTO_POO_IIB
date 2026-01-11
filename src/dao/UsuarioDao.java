@@ -131,13 +131,14 @@ public class UsuarioDao {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                String estadoTexto = rs.getBoolean("activo") ? "ACTIVO" : "DESACTIVADO"; //
                 Object[] fila = {
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getString("cedula"),
                         rs.getString("username"),
                         rs.getString("rol"),
-                        rs.getBoolean("activo")
+                        estadoTexto
                 };
                 lista.add(fila);
             }
