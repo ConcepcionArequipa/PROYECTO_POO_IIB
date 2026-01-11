@@ -3,6 +3,11 @@ package ui;
 import javax.swing.*;
 import dao.Conexion;
 import dao.LicenciaDao;
+import model.Usuario;
+import service.LicenciaService;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -10,6 +15,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
+import model.Licencia;
 import java.io.File;
 
 public class GenerarLicencia extends JFrame {
@@ -18,11 +24,13 @@ public class GenerarLicencia extends JFrame {
     private JButton REGRESARButton;
     private JTextPane textPane1;
     private JPanel generarPanel;
+    private Usuario usuario;
 
     // Guardamos los datos de la fila como variable de instancia
     private Object[] datosFila;
 
-    public GenerarLicencia(Object[] datosFila) {
+    public GenerarLicencia(Object[] datosFila, Usuario usuario) {
+        this.usuario=usuario;
         this.datosFila = datosFila; // Guardamos para usar en otros métodos
         int tramiteId = (int) datosFila[0]; // ID del trámite
 
@@ -50,27 +58,31 @@ public class GenerarLicencia extends JFrame {
         configurarBotones();
 
         setVisible(true);
+
     }
 
     private void configurarBotones() {
         int tramiteId = (int) datosFila[0];
 
         // Botón GUARDAR -> cambia estado en base de datos
-        GUARDARButton.addActionListener(e -> {
-            try (Connection con = new Conexion().getConexion()) {
-                LicenciaDao dao = new LicenciaDao();
-                boolean ok = dao.cambiarEstado(tramiteId, con);
+        GUARDARButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Licencia licencia=new Licencia();
+                    licencia.setTramiteId((int) datosFila[0]);
+                    licencia.setNumeroLicencia("LIC-"+datosFila[1]);
+                    licencia.setFechaVencimiento(java.time.LocalDate.now().plusYears(5));
 
-                if (ok) {
-                    JOptionPane.showMessageDialog(this, "¡Licencia emitida con éxito!");
+                    new LicenciaService().emitirLicencia(licencia,usuario);
+
+                    JOptionPane.showMessageDialog(null,"Licencia emitida correctamente");
                     GUARDARButton.setEnabled(false);
-                    GENERARButton.setEnabled(true); // Habilitar PDF
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo actualizar el estado.");
+                    GENERARButton.setEnabled(true);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,ex.getMessage());
                 }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
-                ex.printStackTrace();
             }
         });
 

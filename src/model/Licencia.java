@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate; //Para las fechas
+import java.time.LocalDateTime;
 
 public class Licencia {
     private int idLicencia;
@@ -8,6 +9,11 @@ public class Licencia {
     private String numeroLicencia;
     private LocalDate fechaEmision;
     private LocalDate fechaVencimiento;
+
+    //Auditoria
+
+    private int createdBy;
+    private LocalDateTime createdAt;
 
     public Licencia() {}
 
@@ -49,5 +55,21 @@ public class Licencia {
 
     public void setFechaVencimiento(LocalDate fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

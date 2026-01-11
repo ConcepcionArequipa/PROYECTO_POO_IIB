@@ -11,9 +11,9 @@ public class LicenciaDao {
     public boolean emitir(Licencia l, Connection con) {
 
         String sql = """
-                insert into licencia
-                (tramite_id,numero_licencia,fecha_emision,fecha_vencimiento)
-                values(?,?,curdate(),?)
+                INSERT INTO licencia
+                        (tramite_id, numero_licencia, fecha_emision, fecha_vencimiento, created_by, created_at)
+                        VALUES (?, ?, CURDATE(), ?, ?, ?)
                 """;
         try(
                 PreparedStatement ps = con.prepareStatement(sql)
@@ -22,10 +22,13 @@ public class LicenciaDao {
             ps.setInt(1,l.getTramiteId());
             ps.setString(2, l.getNumeroLicencia());
             ps.setDate(3,Date.valueOf(l.getFechaVencimiento()));
+            ps.setInt(4,l.getCreatedBy());
+            ps.setTimestamp(5,Timestamp.valueOf(l.getCreatedAt()));
 
             return ps.executeUpdate() > 0;
 
         }catch (Exception e){
+            e.printStackTrace();
             throw new RuntimeException("Error al emitir licencia",e);
         }
     }
@@ -58,15 +61,15 @@ public class LicenciaDao {
         }
     }
 
-    public boolean cambiarEstado(int tramiteId, Connection con) {
-        String sql = "UPDATE tramite SET estado = 'EMITIDA' WHERE id = ?";
+    public boolean cambiarEstado(int tramiteId, String estado, Connection con) {
+        String sql = "UPDATE tramite SET estado = ? WHERE id = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, tramiteId);
+            ps.setString(1,estado);
+            ps.setInt(2, tramiteId);
             return ps.executeUpdate() > 0; // retorna true si se actualizó al menos 1 fila
         } catch (Exception e) {
-            System.out.println("ERROR: " + e);
-            return false;
+            throw new RuntimeException("Error al cambiar el estado del tramite",e);
         }
     }
 }

@@ -267,7 +267,7 @@ public class MenuAnalista extends BaseFrame {
 
             // 2. Abrimos la ventana de GenerarLicencia pasando los datos
             // Usamos una ventana modal para que el analista termine este proceso
-            new GenerarLicencia(datosFila).setVisible(true);
+            new GenerarLicencia(datosFila, usuarioLogueado).setVisible(true);
 
             cargarTablaPorEstado("TODOS");
         });
