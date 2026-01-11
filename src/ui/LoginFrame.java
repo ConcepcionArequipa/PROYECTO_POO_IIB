@@ -17,7 +17,7 @@ public class LoginFrame extends BaseFrame {
 
     public LoginFrame() {
         super("Iniciar Sesion",null); //null porque aun no se inicia sesion
-        setSize(500,300);
+        setSize(420,420);
         setLocationRelativeTo(null);
         initUI();
     }
