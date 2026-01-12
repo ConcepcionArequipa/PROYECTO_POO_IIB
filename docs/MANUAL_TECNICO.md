@@ -79,11 +79,38 @@ El uso de Maven aporta las siguientes ventajas técnicas:
 - Facilidad para desplegar el proyecto.
 - Estandarización del proceso de build.
 
-Dependencias usadas en el proyecto
+## Librerías Utilizadas
 
-- `mysql`  JDBC Driver: conexión a la base de datos remota.
-- `BCrypt` encriptación segura de contraseñas.
-- `iText` generación de documentos PDF.
+El sistema utiliza las siguientes librerías externas para garantizar el correcto funcionamiento de sus diferentes módulos:
+
+### iText 7
+- **itext-commons-7.2.5**  
+  Proporciona funcionalidades comunes compartidas entre los distintos módulos de iText.
+
+- **itext-io-7.2.5**  
+  Manejo de entrada y salida de datos, especialmente para la generación de documentos PDF.
+
+- **itext-kernel-7.2.6**  
+  Núcleo principal de iText, encargado de la estructura base y creación de documentos PDF.
+
+- **itext-layout-7.2.5**  
+  Permite el diseño y la organización visual del contenido dentro de los documentos PDF.
+
+### Seguridad
+- **jbcrypt-0.4**  
+  Utilizada para el hash seguro de contraseñas mediante el algoritmo BCrypt.
+
+### Base de Datos
+- **mysql-connector-j-9.5.0**  
+  Conector JDBC oficial para la comunicación entre la aplicación Java y la base de datos MySQL.
+
+### Logging
+- **slf4j-api-2.0.7**  
+  API de logging utilizada por iText y otras librerías para el manejo de mensajes de registro.
+
+- **slf4j-simple-2.0.7**  
+  Implementación simple de SLF4J que permite mostrar los logs directamente en consola.
+
 
 
 
