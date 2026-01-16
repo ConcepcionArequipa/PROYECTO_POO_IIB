@@ -11,10 +11,27 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
+/**
+ * CLASE ANALISTA
+ * GESTIONA LAS OPERACIONES PRINCIPALES PARA LAS LICENCIAS
+ * <p>
+ * MATERIA : POO
+ * DOCENTE: YADIRA FRANCO
+ *
+ * @author Concepcion Arequipa, Patiño Josue
+ * @version 1.0.2
+ * @see <a href="https://youtu.be/Fc4uFeMXBS8?si=m8ACk4XqPKF90DEp" target="_blank">Link del video</a>
+ * @see <a href="https://github.com/ConcepcionArequipa/PROYECTO_POO_IIB.git" target="_blank">Repositorio en GitHub</a>
+ */
 public class MenuAnalista extends BaseFrame {
 
-    // Cambiados a protected para que MenuAdmin pueda heredarlos
+
+    /**
+     * Menu Analista
+     * <p>
+     * Cambiados a protected para que MenuAdmin pueda heredarlos
+     * 
+     */
     protected JButton btnRegistrar;
     protected JButton btnGenerar;
     protected JButton btnVerificar;

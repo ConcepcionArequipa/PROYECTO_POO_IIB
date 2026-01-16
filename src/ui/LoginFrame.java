@@ -6,6 +6,19 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * CLASE ANALISTA
+ * GESTIONA LAS OPERACIONES PRINCIPALES PARA LAS LICENCIAS
+ * <p>
+ * MATERIA : POO
+ * DOCENTE: YADIRA FRANCO
+ *
+ * @author Concepcion Arequipa, Patiño Josue
+ * @version 1.0.2
+ * @see <a href="https://youtu.be/Fc4uFeMXBS8?si=m8ACk4XqPKF90DEp" target="_blank">Link del video</a>
+ * @see <a href="https://github.com/ConcepcionArequipa/PROYECTO_POO_IIB.git" target="_blank">Repositorio en GitHub</a>
+ */
+
 public class LoginFrame extends BaseFrame {
     private JPanel jpLogin;
     private JPasswordField txtPassword;
@@ -14,14 +27,24 @@ public class LoginFrame extends BaseFrame {
     private JButton ingresarButton;
     private int intentos= 0; //Para el control de 3 intentos
 
-
+    /**
+     * Constructor de la ventana de login.
+     * <p>
+     * Inicializa la ventana con título, tamaño y posición centrada.
+     * No requiere usuario porque aún no se ha iniciado sesión.
+     */
     public LoginFrame() {
         super("Iniciar Sesion",null); //null porque aun no se inicia sesion
         setSize(600,600);
         setLocationRelativeTo(null);
         initUI();
     }
-
+    /**
+     * Inicializa los componentes de la interfaz de usuario.
+     * <p>
+     * Configura el panel principal, bordes y los listeners
+     * para los botones de ingreso y salida.
+     */
     @Override
     public void initUI(){
         setContentPane(jpLogin);
@@ -48,7 +71,13 @@ public class LoginFrame extends BaseFrame {
 
     }
 
-    //Metodo para las acciones del boton del ingreso
+    /**
+     * Valida las credenciales del login.
+     * <p>
+     * Verifica que los campos no estén vacíos, consulta la base de datos
+     * y redirige al menú correspondiente según el rol del usuario.
+     * Maneja los intentos fallidos de autenticación.
+     */
     private void login(){
         String usuarioIngresado = txtUsuario.getText();
         String claveIngresada = new String(txtPassword.getPassword());
